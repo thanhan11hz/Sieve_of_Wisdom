@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.hilt.android)
+    alias(libs.plugins.room)
 }
 
 android {
@@ -42,6 +43,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 
     compileOptions {
@@ -52,6 +54,10 @@ android {
     kotlin {
         jvmToolchain(17)
     }
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {
@@ -98,6 +104,7 @@ dependencies {
 
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)
+    ksp(libs.moshi.kotlin.codegen)
 
     // Hilt
 
@@ -105,6 +112,15 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     implementation(libs.androidx.hilt.navigation.fragment)
+
+    // WorkManager + Hilt Work
+
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.hilt.work)
+    ksp(libs.androidx.hilt.compiler)
+
+    // Security
+    implementation(libs.androidx.security.crypto)
 
     // Unit Test
 
@@ -116,4 +132,5 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.room.testing)
+    testImplementation(libs.okhttp.mockwebserver)
 }

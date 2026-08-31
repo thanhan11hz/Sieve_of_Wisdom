@@ -9,12 +9,8 @@ import com.example.sieve_of_wisdom.data.local.relation.QuestionWithAnswers
 interface QuestionDao {
     @Transaction
     @Query("""
-        SELECT 
-            Question.*,
-            Answer.answering
+        SELECT *
         FROM Question
-        JOIN Answer
-            ON Question.id = Answer.question_id
         WHERE category_id = :categoryId
         ORDER BY RANDOM()
         LIMIT :limit

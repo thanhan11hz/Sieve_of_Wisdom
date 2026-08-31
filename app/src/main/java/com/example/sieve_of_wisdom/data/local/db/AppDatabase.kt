@@ -16,7 +16,8 @@ import com.example.sieve_of_wisdom.data.local.entity.UserEntity
         CategoryEntity::class,
         AccessEntity::class
     ],
-    version = 1
+    version = 1,
+    exportSchema = true
 )
 abstract class AppDatabase: RoomDatabase() {
     abstract fun userDao(): UserDao;
