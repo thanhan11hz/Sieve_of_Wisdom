@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+    <!-- App background -->
+    <color name="app_background">#FFD83D</color>
+
+    <!-- Result / detail backgrounds -->
+    <color name="container_background">#FFF8EE</color>
+
+    <!-- Question states -->
+    <color name="question_correct">#43FF59</color>
+    <color name="question_wrong">#FF4D4D</color>
+
+    <!-- Common colors -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- Buttons -->
+    <color name="button_yellow">#FFD32F</color>
+    <color name="button_green">#A8E52B</color>
+    <color name="button_orange">#FF8B62</color>
+    <color name="button_gray">#E0E0E0</color>
+
 </resources>
