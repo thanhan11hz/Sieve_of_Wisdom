@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <declare-styleable name="NeoTextView">
+
+        <!-- Standard TextView attributes -->
+
+        <attr name="android:text" />
+        <attr name="android:textColor" />
+        <attr name="android:textSize" />
+        <attr name="android:textStyle" />
+        <attr name="android:fontFamily" />
+        <attr name="android:gravity" />
+
+        <!-- Neo Brutalism Shadow -->
+
+        <attr
+            name="neoShadowColor"
+            format="color" />
+
+        <attr
+            name="neoShadowX"
+            format="dimension" />
+
+        <attr
+            name="neoShadowY"
+            format="dimension" />
+
+        <!-- Text Stroke -->
+
+        <attr
+            name="neoStrokeColor"
+            format="color" />
+
+        <attr
+            name="neoStrokeWidth"
+            format="dimension" />
+
+    </declare-styleable>
+
+</resources>

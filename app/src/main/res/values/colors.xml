@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
 
     <!-- App background -->
@@ -22,4 +23,17 @@
     <color name="button_gray">#E0E0E0</color>
     <color name="progress_yellow">#FFD43B</color>
 
+    <!-- Neo Brutalism -->
+    <color name="black">#000000</color>
+
+    <!-- Main page background -->
+    <color name="register_background">#FFF7EF</color>
+
+    <!-- Input -->
+    <color name="input_background">#FFFEFC</color>
+    <color name="input_hint">#3F3F3F</color>
+
+    <!-- Register button -->
+    <color name="primary_yellow">#FFD42A</color>
+    <color name="white">#FAF9F6</color>
 </resources>
