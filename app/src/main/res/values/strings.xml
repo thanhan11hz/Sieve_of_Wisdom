@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Sieve_of_Wisdom</string>
+    <string name="app_name">sieve-of-wisdom</string>
+    <string name="bg_input_radius">4dp</string>
 </resources>
