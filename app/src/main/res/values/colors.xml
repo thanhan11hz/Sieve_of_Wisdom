@@ -20,5 +20,6 @@
     <color name="button_green">#A8E52B</color>
     <color name="button_orange">#FF8B62</color>
     <color name="button_gray">#E0E0E0</color>
+    <color name="progress_yellow">#FFD43B</color>
 
 </resources>
