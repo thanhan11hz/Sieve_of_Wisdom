@@ -2,6 +2,35 @@
 
 <resources>
 
+    <!-- ================================================= -->
+    <!-- SHARED NEO ATTRIBUTES -->
+    <!-- ================================================= -->
+
+    <attr
+        name="neoShadowColor"
+        format="color" />
+
+    <attr
+        name="neoShadowX"
+        format="dimension" />
+
+    <attr
+        name="neoShadowY"
+        format="dimension" />
+
+    <attr
+        name="neoStrokeColor"
+        format="color" />
+
+    <attr
+        name="neoStrokeWidth"
+        format="dimension" />
+
+
+    <!-- ================================================= -->
+    <!-- NEO TEXT VIEW -->
+    <!-- ================================================= -->
+
     <declare-styleable name="NeoTextView">
 
         <!-- Standard TextView attributes -->
@@ -13,28 +42,41 @@
         <attr name="android:fontFamily" />
         <attr name="android:gravity" />
 
-        <!-- Neo Brutalism Shadow -->
+        <!-- Shared Neo attributes -->
+
+        <attr name="neoShadowColor" />
+        <attr name="neoShadowX" />
+        <attr name="neoShadowY" />
+
+        <attr name="neoStrokeColor" />
+        <attr name="neoStrokeWidth" />
+
+    </declare-styleable>
+
+
+    <!-- ================================================= -->
+    <!-- NEO FRAME LAYOUT -->
+    <!-- ================================================= -->
+
+    <declare-styleable name="NeoFrameLayout">
+
+        <!-- Shared Neo attributes -->
+
+        <attr name="neoShadowColor" />
+        <attr name="neoShadowX" />
+        <attr name="neoShadowY" />
+
+        <attr name="neoStrokeColor" />
+        <attr name="neoStrokeWidth" />
+
+        <!-- NeoFrameLayout specific -->
 
         <attr
-            name="neoShadowColor"
+            name="neoBackgroundColor"
             format="color" />
 
         <attr
-            name="neoShadowX"
-            format="dimension" />
-
-        <attr
-            name="neoShadowY"
-            format="dimension" />
-
-        <!-- Text Stroke -->
-
-        <attr
-            name="neoStrokeColor"
-            format="color" />
-
-        <attr
-            name="neoStrokeWidth"
+            name="neoCornerRadius"
             format="dimension" />
 
     </declare-styleable>

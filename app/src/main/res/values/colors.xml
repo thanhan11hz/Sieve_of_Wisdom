@@ -11,6 +11,10 @@
     <!-- Input -->
     <color name="input_background">#FFFEFC</color>
     <color name="input_hint">#3F3F3F</color>
+    <color name="background">#FFF8F0</color>
+    <color name="quiz_blue">#19B5D1</color>
+    <color name="quiz_locked_red">#FF4B4B</color>
+
 
     <!-- Register button -->
     <color name="primary_yellow">#FFD42A</color>

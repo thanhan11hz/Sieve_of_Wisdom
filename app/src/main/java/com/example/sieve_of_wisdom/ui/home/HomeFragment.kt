@@ -14,31 +14,31 @@ class HomeFragment: Fragment(R.layout.fragment_home) {
     private val binding
         get() = _binding!!
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?
-    ) {
-        super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentHomeBinding.bind(view)
-        observeViewModel()
-        setupListener()
-    }
+//    override fun onViewCreated(
+//        view: View,
+//        savedInstanceState: Bundle?
+//    ) {
+//        super.onViewCreated(view, savedInstanceState)
+//        _binding = FragmentHomeBinding.bind(view)
+//        observeViewModel()
+//        setupListener()
+//    }
 
-    private fun observeViewModel() {
-
-        viewModel.message.observe(viewLifecycleOwner) { message ->
-            binding.tvMessage.text = message
-        }
-    }
-
-    private fun setupListener() {
-        binding.btnLoad.setOnClickListener {
-            viewModel.loadData()
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+//    private fun observeViewModel() {
+//
+//        viewModel.message.observe(viewLifecycleOwner) { message ->
+//            binding.tvMessage.text = message
+//        }
+//    }
+//
+//    private fun setupListener() {
+//        binding.btnLoad.setOnClickListener {
+//            viewModel.loadData()
+//        }
+//    }
+//
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        _binding = null
+//    }
 }
