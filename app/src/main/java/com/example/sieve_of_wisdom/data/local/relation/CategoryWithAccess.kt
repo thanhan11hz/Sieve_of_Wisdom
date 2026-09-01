@@ -1,5 +1,6 @@
 package com.example.sieve_of_wisdom.data.local.relation
 
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import com.example.sieve_of_wisdom.data.local.entity.CategoryEntity
 
@@ -7,5 +8,6 @@ data class CategoryWithAccess(
     @Embedded
     val category: CategoryEntity,
 
+    @ColumnInfo(name = "is_unlocked")
     val isUnlocked: Boolean
 )

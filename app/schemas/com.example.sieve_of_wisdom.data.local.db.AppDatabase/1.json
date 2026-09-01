@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "fe01c010ffeb1f3e57074daee4d0da47",
+    "identityHash": "61d172f23e1475de9b78f2c7267290b4",
     "entities": [
       {
         "tableName": "User",
@@ -150,7 +150,7 @@
       },
       {
         "tableName": "Category",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `classification` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `classification` TEXT NOT NULL, `price` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -163,6 +163,12 @@
             "columnName": "classification",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "price",
+            "columnName": "price",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -174,7 +180,7 @@
       },
       {
         "tableName": "Access",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `category_id` INTEGER NOT NULL, `status` TEXT NOT NULL, PRIMARY KEY(`user_id`, `category_id`), FOREIGN KEY(`user_id`) REFERENCES `User`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`category_id`) REFERENCES `Category`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `category_id` INTEGER NOT NULL, PRIMARY KEY(`user_id`, `category_id`), FOREIGN KEY(`user_id`) REFERENCES `User`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`category_id`) REFERENCES `Category`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "userId",
@@ -186,12 +192,6 @@
             "fieldPath": "categoryId",
             "columnName": "category_id",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "status",
-            "columnName": "status",
-            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -250,7 +250,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fe01c010ffeb1f3e57074daee4d0da47')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '61d172f23e1475de9b78f2c7267290b4')"
     ]
   }
 }
