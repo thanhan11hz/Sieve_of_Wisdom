@@ -36,9 +36,24 @@ interface CategoryDao {
         FROM Category
         LEFT JOIN Access
             ON Category.id = Access.category_id
-        WHERE Category.classification LIKE '%' || :query || "%"
+        WHERE Category.name LIKE '%' || :query || "%"
     """)
     suspend fun getCategoryBySearch(query: String): List<CategoryWithAccess>;
+
+    @Transaction
+    @Query("""
+        SELECT 
+            Category.*,
+            CASE 
+                WHEN Access.category_id IS NOT NULL THEN 1
+                ELSE 0
+            END AS is_unlocked
+        FROM Category
+        LEFT JOIN Access
+            ON Category.id = Access.category_id
+        WHERE Category.classification = classification
+    """)
+    suspend fun getCategoryByClassification(classification: String): List<CategoryWithAccess>;
 
     @Transaction
     @Query("""

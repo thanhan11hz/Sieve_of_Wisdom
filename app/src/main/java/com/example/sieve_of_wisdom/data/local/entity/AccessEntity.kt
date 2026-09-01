@@ -35,4 +35,7 @@ data class AccessEntity(
 
     @ColumnInfo(name = "category_id")
     val categoryId: Int,
+
+    @ColumnInfo(name = "is_synced")
+    val isSynced: Boolean = false
 )

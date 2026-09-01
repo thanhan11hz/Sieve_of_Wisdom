@@ -2,6 +2,7 @@ package com.example.sieve_of_wisdom.di
 
 import com.example.sieve_of_wisdom.BuildConfig
 import com.example.sieve_of_wisdom.data.remote.api.AuthApiService
+import com.example.sieve_of_wisdom.data.remote.api.SyncApiService
 import java.util.concurrent.TimeUnit
 import com.example.sieve_of_wisdom.data.remote.interceptor.AuthInterceptor
 import com.example.sieve_of_wisdom.data.remote.interceptor.TokenAuthenticator
@@ -69,4 +70,10 @@ object NetworkModule {
     @Singleton
     fun provideAuthApiService(retrofit: Retrofit): AuthApiService =
         retrofit.create(AuthApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideSyncApiService(retrofit: Retrofit): SyncApiService =
+        retrofit.create(SyncApiService::class.java)
+
 }
