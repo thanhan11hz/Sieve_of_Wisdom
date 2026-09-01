@@ -18,7 +18,7 @@ interface CategoryDao {
             CASE 
                 WHEN Access.category_id IS NOT NULL THEN 1
                 ELSE 0
-            END AS is_unlocked
+            END AS isUnlocked
         FROM Category
         LEFT JOIN Access
             ON Category.id = Access.category_id
@@ -32,7 +32,7 @@ interface CategoryDao {
             CASE 
                 WHEN Access.category_id IS NOT NULL THEN 1
                 ELSE 0
-            END AS is_unlocked
+            END AS isUnlocked
         FROM Category
         LEFT JOIN Access
             ON Category.id = Access.category_id
@@ -47,11 +47,11 @@ interface CategoryDao {
             CASE 
                 WHEN Access.category_id IS NOT NULL THEN 1
                 ELSE 0
-            END AS is_unlocked
+            END AS isUnlocked
         FROM Category
         LEFT JOIN Access
             ON Category.id = Access.category_id
-        WHERE Category.classification = classification
+        WHERE Category.classification = :classification
     """)
     suspend fun getCategoryByClassification(classification: String): List<CategoryWithAccess>;
 
@@ -59,7 +59,7 @@ interface CategoryDao {
     @Query("""
         SELECT 
             Category.*,
-            0 AS is_unlocked
+            0 AS isUnlocked
         FROM Category
         LEFT JOIN Access
             ON Category.id = Access.category_id
@@ -71,7 +71,7 @@ interface CategoryDao {
     @Query("""
         SELECT 
             Category.*,
-            1 AS is_unlocked
+            1 AS isUnlocked
         FROM Category
         JOIN Access
             ON Category.id = Access.category_id

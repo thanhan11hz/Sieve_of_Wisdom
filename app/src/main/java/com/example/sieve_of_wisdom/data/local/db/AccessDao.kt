@@ -11,6 +11,9 @@ import com.example.sieve_of_wisdom.data.local.entity.QuestionEntity
 interface AccessDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAccess(access: AccessEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAccesses(accesses: List<AccessEntity>)
 
     @Query("SELECT * FROM access WHERE is_synced = 0")
