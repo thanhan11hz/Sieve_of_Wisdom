@@ -35,6 +35,4 @@ data class AccessEntity(
 
     @ColumnInfo(name = "category_id")
     val categoryId: Int,
-
-    val status: String = "Locked"
 )

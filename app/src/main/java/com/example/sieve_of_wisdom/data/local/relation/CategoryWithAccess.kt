@@ -7,5 +7,5 @@ data class CategoryWithAccess(
     @Embedded
     val category: CategoryEntity,
 
-    val status: String
+    val isUnlocked: Boolean
 )

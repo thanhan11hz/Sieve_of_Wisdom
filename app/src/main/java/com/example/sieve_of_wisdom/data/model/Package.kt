@@ -5,5 +5,7 @@ data class Package(
 
     val classification: String,
 
-    val status: String
+    val isUnlocked: Boolean,
+
+    val price: Int
 )

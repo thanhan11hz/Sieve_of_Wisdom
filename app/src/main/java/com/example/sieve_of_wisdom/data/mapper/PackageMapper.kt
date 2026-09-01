@@ -7,6 +7,7 @@ fun CategoryWithAccess.toModel(): Package {
     return Package(
         categoryId = category.id,
         classification = category.classification,
-        status = status
+        isUnlocked = isUnlocked,
+        price = category.price
     )
 }

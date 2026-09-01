@@ -15,11 +15,52 @@ interface CategoryDao {
     @Query("""
         SELECT 
             Category.*,
-            Access.status
+            CASE 
+                WHEN Access.category_id IS NOT NULL THEN 1
+                ELSE 0
+            END AS is_unlocked
+        FROM Category
+        LEFT JOIN Access
+            ON Category.id = Access.category_id
+    """)
+    suspend fun getCategoryWithAccess(): List<CategoryWithAccess>;
+
+    @Transaction
+    @Query("""
+        SELECT 
+            Category.*,
+            CASE 
+                WHEN Access.category_id IS NOT NULL THEN 1
+                ELSE 0
+            END AS is_unlocked
+        FROM Category
+        LEFT JOIN Access
+            ON Category.id = Access.category_id
+        WHERE Category.classification LIKE '%' || :query || "%"
+    """)
+    suspend fun getCategoryBySearch(query: String): List<CategoryWithAccess>;
+
+    @Transaction
+    @Query("""
+        SELECT 
+            Category.*,
+            0 AS is_unlocked
+        FROM Category
+        LEFT JOIN Access
+            ON Category.id = Access.category_id
+        WHERE Access.category_id IS NULL
+    """)
+    suspend fun getLockedCategory(): List<CategoryWithAccess>;
+
+    @Transaction
+    @Query("""
+        SELECT 
+            Category.*,
+            1 AS is_unlocked
         FROM Category
         JOIN Access
             ON Category.id = Access.category_id
-        WHERE Access.user_id = :userId
+        WHERE Access.category_id IS NOT NULL
     """)
-    suspend fun getCategoryByStatus(userId: Int): List<CategoryWithAccess>;
+    suspend fun getUnlockedCategory(): List<CategoryWithAccess>;
 }

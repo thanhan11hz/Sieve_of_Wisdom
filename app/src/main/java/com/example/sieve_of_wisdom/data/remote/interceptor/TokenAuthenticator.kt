@@ -1,5 +1,7 @@
 package com.example.sieve_of_wisdom.data.remote.interceptor
 
+import com.example.sieve_of_wisdom.data.remote.api.AuthApiService
+import com.example.sieve_of_wisdom.data.remote.dto.RefreshTokenRequest
 import com.example.sieve_of_wisdom.util.AuthManager
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
@@ -29,18 +31,26 @@ class TokenAuthenticator @Inject constructor(
 
             val refreshToken = authManager.getRefreshToken() ?: return null;
 
-            return runBlocking {
-                try {
-                    val newTokens = authApiProvider.get().refreshToken(RefreshRequest(refreshToken))
-                    authManager.saveTokens(newTokens.accessToken, newTokens.refreshToken);
+            return try {
+                val retrofitResponse = authApiProvider.get().refreshToken(
+                    RefreshTokenRequest(refreshToken)
+                ).execute()
 
-                    response.request.newBuilder()
-                        .header("Authorization", "Bearer ${newTokens.accessToken}")
+                val authResponse = retrofitResponse.body()
+
+                if (retrofitResponse.isSuccessful && authResponse != null) {
+                    authManager.saveTokens(authResponse.accessToken, authResponse.refreshToken);
+
+                    return response.request.newBuilder()
+                        .header("Authorization", "Bearer ${authResponse.accessToken}")
                         .build();
-                } catch (e: Exception) {
+                } else {
                     authManager.clear();
                     null;
                 }
+            } catch (e: Exception) {
+                authManager.clear();
+                null;
             }
         }
     }

@@ -8,5 +8,7 @@ data class CategoryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
 
-    val classification: String
+    val classification: String,
+
+    val price: Int
 )
