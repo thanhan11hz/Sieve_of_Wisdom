@@ -141,7 +141,8 @@
         android:layout_height="126dp"
         android:layout_marginStart="22dp"
         android:layout_marginEnd="22dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/bg_answer"
         android:gravity="top|start"
         android:hint="Nhập đáp án của bạn"
@@ -162,13 +163,16 @@
 
     <!-- ================= SUBMIT BUTTON ================= -->
 
+
+    <!-- ================= SKIP BUTTON ================= -->
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSubmit"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="28dp"
         android:background="@drawable/bg_submit_button"
         android:elevation="3dp"
         android:text="Trả lời"
@@ -177,12 +181,10 @@
         android:textSize="29sp"
         android:textStyle="bold"
         app:fontFamily="@font/itim"
-        app:layout_constraintBottom_toTopOf="@id/btnSkip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-
-    <!-- ================= SKIP BUTTON ================= -->
+        app:layout_constraintTop_toBottomOf="@+id/edtAnswer" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSkip"
@@ -190,7 +192,7 @@
         android:layout_height="56dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="120dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/bg_skip_button"
         android:elevation="3dp"
         app:fontFamily="@font/itim"
@@ -199,7 +201,7 @@
         android:textColor="#000000"
         android:textSize="29sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSubmit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
