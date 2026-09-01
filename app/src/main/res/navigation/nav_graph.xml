@@ -5,12 +5,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/registerFragment">
 
 <!--    REGISTER-->
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.example.sieve_of_wisdom.ui.auth.RegisterFragment"
+        android:name="com.example.sieve_of_wisdom.ui.auth.register.RegisterFragment"
         android:label="Register"
         tools:layout="@layout/fragment_register">
 
@@ -29,7 +29,7 @@
 <!--    LOGIN-->
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.example.sieve_of_wisdom.ui.auth.SignInFragment"
+        android:name="com.example.sieve_of_wisdom.ui.auth.sign_in.SignInFragment"
         android:label="Sign In"
         tools:layout="@layout/fragment_sign_in">
 
