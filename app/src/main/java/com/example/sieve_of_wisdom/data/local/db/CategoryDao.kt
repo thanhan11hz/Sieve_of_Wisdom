@@ -2,14 +2,17 @@ package com.example.sieve_of_wisdom.data.local.db
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Insert
 import androidx.room.Transaction
 import com.example.sieve_of_wisdom.data.local.entity.CategoryEntity
 import com.example.sieve_of_wisdom.data.local.relation.CategoryWithAccess
+import androidx.room.OnConflictStrategy
 
 @Dao
 interface CategoryDao {
+
     @Query("SELECT * FROM Category")
-    suspend fun getAllCategory(): List<CategoryEntity>;
+    suspend fun getAllCategory(): List<CategoryEntity>
 
     @Transaction
     @Query("""
@@ -22,8 +25,12 @@ interface CategoryDao {
         FROM Category
         LEFT JOIN Access
             ON Category.id = Access.category_id
+            AND Access.user_id = :userId
+        ORDER BY Category.id
     """)
-    suspend fun getCategoryWithAccess(): List<CategoryWithAccess>;
+    suspend fun getCategoryWithAccess(
+        userId: Int
+    ): List<CategoryWithAccess>
 
     @Transaction
     @Query("""
@@ -36,9 +43,14 @@ interface CategoryDao {
         FROM Category
         LEFT JOIN Access
             ON Category.id = Access.category_id
-        WHERE Category.name LIKE '%' || :query || "%"
+            AND Access.user_id = :userId
+        WHERE Category.name LIKE '%' || :query || '%'
+        ORDER BY Category.id
     """)
-    suspend fun getCategoryBySearch(query: String): List<CategoryWithAccess>;
+    suspend fun getCategoryBySearch(
+        userId: Int,
+        query: String
+    ): List<CategoryWithAccess>
 
     @Transaction
     @Query("""
@@ -51,9 +63,14 @@ interface CategoryDao {
         FROM Category
         LEFT JOIN Access
             ON Category.id = Access.category_id
+            AND Access.user_id = :userId
         WHERE Category.classification = :classification
+        ORDER BY Category.id
     """)
-    suspend fun getCategoryByClassification(classification: String): List<CategoryWithAccess>;
+    suspend fun getCategoryByClassification(
+        userId: Int,
+        classification: String
+    ): List<CategoryWithAccess>
 
     @Transaction
     @Query("""
@@ -61,11 +78,17 @@ interface CategoryDao {
             Category.*,
             0 AS isUnlocked
         FROM Category
-        LEFT JOIN Access
-            ON Category.id = Access.category_id
-        WHERE Access.category_id IS NULL
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM Access
+            WHERE Access.category_id = Category.id
+            AND Access.user_id = :userId
+        )
+        ORDER BY Category.id
     """)
-    suspend fun getLockedCategory(): List<CategoryWithAccess>;
+    suspend fun getLockedCategory(
+        userId: Int
+    ): List<CategoryWithAccess>
 
     @Transaction
     @Query("""
@@ -73,9 +96,20 @@ interface CategoryDao {
             Category.*,
             1 AS isUnlocked
         FROM Category
-        JOIN Access
+        INNER JOIN Access
             ON Category.id = Access.category_id
-        WHERE Access.category_id IS NOT NULL
+        WHERE Access.user_id = :userId
+        ORDER BY Category.id
     """)
-    suspend fun getUnlockedCategory(): List<CategoryWithAccess>;
+    suspend fun getUnlockedCategory(
+        userId: Int
+    ): List<CategoryWithAccess>
+
+    @Query("SELECT DISTINCT classification FROM Category")
+    suspend fun getAllClassifications(): List<String>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCategories(
+        categories: List<CategoryEntity>
+    )
 }

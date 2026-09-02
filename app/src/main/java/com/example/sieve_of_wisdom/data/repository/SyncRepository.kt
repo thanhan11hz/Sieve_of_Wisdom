@@ -2,6 +2,7 @@ package com.example.sieve_of_wisdom.data.repository
 
 import com.example.sieve_of_wisdom.data.local.db.AccessDao
 import com.example.sieve_of_wisdom.data.local.db.AnswerDao
+import com.example.sieve_of_wisdom.data.local.db.CategoryDao
 import com.example.sieve_of_wisdom.data.local.db.QuestionDao
 import com.example.sieve_of_wisdom.data.local.db.UserDao
 import com.example.sieve_of_wisdom.data.mapper.toAnswerEntity
@@ -10,10 +11,12 @@ import com.example.sieve_of_wisdom.data.mapper.toQuestionEntity
 import com.example.sieve_of_wisdom.data.remote.api.SyncApiService
 import com.example.sieve_of_wisdom.data.remote.dto.SyncAccessRequest
 import com.example.sieve_of_wisdom.data.remote.dto.SyncUserCoinRequest
+import com.example.sieve_of_wisdom.data.mapper.toCategoryEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.collections.map
 
 @Singleton
 class SyncRepository @Inject constructor(
@@ -21,7 +24,8 @@ class SyncRepository @Inject constructor(
     private val userDao: UserDao,
     private val accessDao: AccessDao,
     private val questionDao: QuestionDao,
-    private val answerDao: AnswerDao
+    private val answerDao: AnswerDao,
+    private val categoryDao: CategoryDao
 ) {
 
     suspend fun syncAllData(): Result<Unit> = withContext(Dispatchers.IO) {
@@ -61,6 +65,15 @@ class SyncRepository @Inject constructor(
 
                     questionDao.insertQuestions(questionEntities)
                     answerDao.insertAnswers(answerEntities)
+                }
+            }
+
+            val categoriesResponse = syncApiService.getCategories()
+
+            if (categoriesResponse.isSuccessful) {
+                categoriesResponse.body()?.let { categoryDtoList ->
+                    val categoryEntities = categoryDtoList.map { it.toCategoryEntity() }
+                    categoryDao.insertCategories(categoryEntities)
                 }
             }
         }

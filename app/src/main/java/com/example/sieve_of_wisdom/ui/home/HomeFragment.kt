@@ -59,6 +59,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             packageAdapter.submitList(packages)
         }
 
+        viewModel.coin.observe(viewLifecycleOwner) { coin ->
+            binding.tvCoin.text = coin.toString()
+        }
+
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             binding.rvQuizPackages.isEnabled = !isLoading
         }
@@ -76,42 +80,39 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setupTopics() {
 
-        val topicContainer = binding.topicContainer
-
-        topicContainer.removeAllViews()
-
-        val topics = listOf(
-            "Tất cả",
-            "Khoa học",
-            "Lịch sử",
-            "Văn hóa",
-            "Địa lý"
-        )
-
-        topics.forEach { topic ->
-
-            val topicView = LayoutInflater.from(requireContext())
-                .inflate(
-                    R.layout.item_quiz_topic,
-                    topicContainer,
-                    false
-                )
-
-            val topicName =
-                topicView.findViewById<TextView>(R.id.tv_topic_name)
-
-            topicName.text = topic
-
-            topicName.setOnClickListener {
-
-                if (topic == "Tất cả") {
-                    viewModel.filterByTopic(null)
-                } else {
-                    viewModel.filterByTopic(topic)
+        viewModel.topics.observe(viewLifecycleOwner) { topics ->
+    
+            binding.topicContainer.removeAllViews()
+    
+            val allTopics = listOf("Tất cả") + topics
+    
+            allTopics.forEach { topic ->
+    
+                val topicView =
+                    LayoutInflater.from(requireContext())
+                        .inflate(
+                            R.layout.item_quiz_topic,
+                            binding.topicContainer,
+                            false
+                        )
+    
+                val topicName =
+                    topicView.findViewById<TextView>(
+                        R.id.tv_topic_name
+                    )
+    
+                topicName.text = topic
+    
+                topicName.setOnClickListener {
+    
+                    viewModel.filterByTopic(
+                        if (topic == "Tất cả") null
+                        else topic
+                    )
                 }
+    
+                binding.topicContainer.addView(topicView)
             }
-
-            topicContainer.addView(topicView)
         }
     }
 

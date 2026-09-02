@@ -30,4 +30,5 @@ class UserRepository @Inject constructor(
     suspend fun addCoin(amount: Int) {
         userDao.addCoin(amount)
     }
+
 }

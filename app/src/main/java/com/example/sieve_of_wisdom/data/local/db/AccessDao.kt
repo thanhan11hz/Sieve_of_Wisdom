@@ -24,4 +24,14 @@ interface AccessDao {
 
     @Query("DELETE FROM Access")
     suspend fun clearAccesses()
+
+    @Query("""
+        SELECT EXISTS(
+            SELECT 1
+            FROM Access
+            WHERE user_id = :userId
+            AND category_id = :categoryId
+        )
+    """)
+    suspend fun isCategoryUnlocked(userId: Int, categoryId: Int): Boolean
 }

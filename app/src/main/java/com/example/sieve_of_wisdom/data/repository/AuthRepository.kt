@@ -74,47 +74,47 @@ class AuthRepository @Inject constructor(
 //                }
 //            }
 //        }
-suspend fun register(
-    username: String,
-    email: String,
-    password: String
-): Result<Unit> =
-    runCatching {
+        suspend fun register(
+            username: String,
+            email: String,
+            password: String
+        ): Result<Unit> =
+            runCatching {
 
-        withContext(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
 
-            val response = authApiService.register(
-                RegisterRequest(
-                    username = username,
-                    email = email,
-                    password = password
-                )
-            )
-
-            if (response.isSuccessful) {
-
-                val registerResponse =
-                    response.body()
-                        ?: throw Exception(
-                            "Register response is empty"
-                        )
-
-                Log.d(
-                    "AUTH_REGISTER",
-                    "Register success: $registerResponse"
+                val response = authApiService.register(
+                    RegisterRequest(
+                        username = username,
+                        email = email,
+                        password = password
+                    )
                 )
 
-            } else {
+                if (response.isSuccessful) {
 
-                val errorBody =
-                    response.errorBody()?.string()
+                    val registerResponse =
+                        response.body()
+                            ?: throw Exception(
+                                "Register response is empty"
+                            )
 
-                throw Exception(
-                    "Register failed: HTTP ${response.code()} ${response.message()}\n$errorBody"
-                )
+                    Log.d(
+                        "AUTH_REGISTER",
+                        "Register success: $registerResponse"
+                    )
+
+                } else {
+
+                    val errorBody =
+                        response.errorBody()?.string()
+
+                    throw Exception(
+                        "Register failed: HTTP ${response.code()} ${response.message()}\n$errorBody"
+                    )
+                }
             }
         }
-    }
 
     suspend fun logout(): Result<Unit> =
         runCatching {

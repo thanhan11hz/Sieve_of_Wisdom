@@ -123,7 +123,7 @@
 
             <!-- POINTS -->
             <TextView
-                android:id="@+id/tv_streak_points"
+                android:id="@+id/tv_coin"
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
