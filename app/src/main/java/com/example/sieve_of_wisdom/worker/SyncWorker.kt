@@ -47,5 +47,9 @@ class SyncWorker @AssistedInject constructor(
                 syncRequest
             )
         }
+
+        fun cancelSync(context: Context) {
+            WorkManager.getInstance(context).cancelUniqueWork(WORK_NAME)
+        }
     }
 }
