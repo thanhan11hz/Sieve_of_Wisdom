@@ -16,6 +16,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
+import android.util.Log
+import com.example.sieve_of_wisdom.data.local.entity.UserEntity
 
 @Singleton
 class AuthRepository @Inject constructor(
@@ -36,7 +38,12 @@ class AuthRepository @Inject constructor(
 
                     authManager.saveTokens(authResponse.accessToken, authResponse.refreshToken)
 
-                    val userEntity = authResponse.user.toEntity()
+                    val userEntity = UserEntity(
+                        id = authResponse.userId,
+                        username = authResponse.username,
+                        email = authResponse.email,
+                        coin = authResponse.coin
+                    )
                     userDao.insertUser(userEntity)
                     SyncWorker.enqueueSync(context)
                     userEntity.toModel()
@@ -47,26 +54,67 @@ class AuthRepository @Inject constructor(
             }
         }
 
-    suspend fun register(username: String, email: String, password: String): Result<Profile> =
-        runCatching {
-            withContext(Dispatchers.IO) {
-                val response = authApiService.register(RegisterRequest(username, email, password))
+//    suspend fun register(username: String, email: String, password: String): Result<Profile> =
+//        runCatching {
+//            withContext(Dispatchers.IO) {
+//                val response = authApiService.register(RegisterRequest(username, email, password))
+//
+//                if (response.isSuccessful) {
+//                    val authResponse = response.body() ?: throw Exception("Returned data is empty")
+//
+//                    authManager.saveTokens(authResponse.accessToken, authResponse.refreshToken)
+//
+//                    val userEntity = authResponse.user.toEntity()
+//                    userDao.insertUser(userEntity)
+//                    SyncWorker.enqueueSync(context)
+//                    userEntity.toModel()
+//                } else {
+//                    val errorMessage = response.errorBody()?.string() ?: "Register fails"
+//                    throw Exception(errorMessage)
+//                }
+//            }
+//        }
+suspend fun register(
+    username: String,
+    email: String,
+    password: String
+): Result<Unit> =
+    runCatching {
 
-                if (response.isSuccessful) {
-                    val authResponse = response.body() ?: throw Exception("Returned data is empty")
+        withContext(Dispatchers.IO) {
 
-                    authManager.saveTokens(authResponse.accessToken, authResponse.refreshToken)
+            val response = authApiService.register(
+                RegisterRequest(
+                    username = username,
+                    email = email,
+                    password = password
+                )
+            )
 
-                    val userEntity = authResponse.user.toEntity()
-                    userDao.insertUser(userEntity)
-                    SyncWorker.enqueueSync(context)
-                    userEntity.toModel()
-                } else {
-                    val errorMessage = response.errorBody()?.string() ?: "Register fails"
-                    throw Exception(errorMessage)
-                }
+            if (response.isSuccessful) {
+
+                val registerResponse =
+                    response.body()
+                        ?: throw Exception(
+                            "Register response is empty"
+                        )
+
+                Log.d(
+                    "AUTH_REGISTER",
+                    "Register success: $registerResponse"
+                )
+
+            } else {
+
+                val errorBody =
+                    response.errorBody()?.string()
+
+                throw Exception(
+                    "Register failed: HTTP ${response.code()} ${response.message()}\n$errorBody"
+                )
             }
         }
+    }
 
     suspend fun logout(): Result<Unit> =
         runCatching {

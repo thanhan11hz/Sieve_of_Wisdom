@@ -8,6 +8,5 @@ data class CategoryWithAccess(
     @Embedded
     val category: CategoryEntity,
 
-    @ColumnInfo(name = "is_unlocked")
     val isUnlocked: Boolean
 )

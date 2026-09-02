@@ -22,7 +22,7 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun register(username: String, email: String, password: String, onResult: (Result<Profile>) -> Unit) {
+    fun register(username: String, email: String, password: String, onResult: (Result<Unit>) -> Unit) {
         viewModelScope.launch {
             val result = authRepository.register(username, email, password)
             onResult(result)

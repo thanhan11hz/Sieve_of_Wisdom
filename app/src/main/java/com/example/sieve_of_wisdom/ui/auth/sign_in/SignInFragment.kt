@@ -2,6 +2,7 @@ package com.example.sieve_of_wisdom.ui.auth.sign_in
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,15 +13,17 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.sieve_of_wisdom.R
 import com.example.sieve_of_wisdom.databinding.FragmentSignInBinding
-import com.example.sieve_of_wisdom.ui.auth.sign_in.SignInViewModel
+import com.example.sieve_of_wisdom.ui.viewmodel.AuthViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignInFragment : Fragment() {
+
     private var _binding: FragmentSignInBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: SignInViewModel by viewModels()
 
+    private val viewModel: AuthViewModel by viewModels()
 
-    // LIFECYCLE
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,75 +34,166 @@ class SignInFragment : Fragment() {
             container,
             false
         )
+
         return binding.root
     }
-
 
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?
     ) {
         super.onViewCreated(view, savedInstanceState)
+
         setupListeners()
-        observeViewModel()
     }
 
     private fun setupListeners() {
+
         binding.btnLogin.setOnClickListener {
+
+            val username =
+                binding.etUsername.text.toString().trim()
+
+            val password =
+                binding.etPassword.text.toString()
+
+            // Validate input
+            val validationError =
+                validateInput(
+                    username = username,
+                    password = password
+                )
+
+            if (validationError != null) {
+                showError(
+                    validationError.first,
+                    validationError.second
+                )
+                return@setOnClickListener
+            }
+
+            clearErrors()
+
+            binding.btnLogin.isEnabled = false
+
             viewModel.login(
-                username = binding.etUsername.text.toString().trim(),
-                password = binding.etPassword.text.toString()
-            )
+                username = username,
+                password = password
+            ) { result ->
+
+                requireActivity().runOnUiThread {
+
+                    binding.btnLogin.isEnabled = true
+
+                    if (result.isSuccess) {
+
+                        val profile =
+                            result.getOrNull()
+
+                        Log.d(
+                            "AUTH_LOGIN",
+                            "Login success: $profile"
+                        )
+
+                        hideKeyboard()
+
+                        Toast.makeText(
+                            requireContext(),
+                            "Đăng nhập thành công",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        navigateToHome()
+
+                    } else {
+
+                        val exception =
+                            result.exceptionOrNull()
+
+                        Log.e(
+                            "AUTH_LOGIN",
+                            """
+                            ==============================
+                            LOGIN FAILED
+                            ==============================
+                            Exception type:
+                            ${exception?.javaClass?.name}
+
+                            Message:
+                            ${exception?.message}
+
+                            Stack trace:
+                            ${exception?.stackTraceToString()}
+                            ==============================
+                            """.trimIndent(),
+                            exception
+                        )
+
+                        Toast.makeText(
+                            requireContext(),
+                            exception?.message
+                                ?: "Đăng nhập thất bại",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
         }
 
         binding.tvRegisterRedirect.setOnClickListener {
             navigateToRegister()
         }
 
-
         binding.tvForgotPassword.setOnClickListener {
-            viewModel.forgotPassword()
+            Toast.makeText(
+                requireContext(),
+                "Tính năng quên mật khẩu chưa triển khai",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
-    private fun observeViewModel() {
-        viewModel.loginResult.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is LoginResult.Success -> {
-                    hideKeyboard()
-                    Toast.makeText(
-                        requireContext(),
-                        "Đăng nhập thành công (placeholder)",
-                        Toast.LENGTH_SHORT
-                    ).show()
+    private fun validateInput(
+        username: String,
+        password: String
+    ): Pair<String, String>? {
 
-                    navigateToHome()
-                }
+        if (username.isEmpty()) {
+            return "username" to
+                    "Vui lòng nhập tên đăng nhập"
+        }
 
+        if (password.isEmpty()) {
+            return "password" to
+                    "Vui lòng nhập mật khẩu"
+        }
 
-                is LoginResult.Error -> {
-                    when (result.field) {
-                        "username" -> {
-                            binding.etUsername.error = result.message
-                            binding.etUsername.requestFocus()
-                        }
-                        "password" -> {
-                            binding.etPassword.error =  result.message
-                            binding.etPassword.requestFocus()
-                        }
-                    }
-                }
+        return null
+    }
 
+    private fun showError(
+        field: String,
+        message: String
+    ) {
+        clearErrors()
 
-                is LoginResult.ForgotPassword -> {
-                    Toast.makeText(
-                        requireContext(),
-                        "Quên mật khẩu (chưa triển khai)",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+        when (field) {
+
+            "username" -> {
+                binding.etUsername.error = message
+                binding.etUsername.requestFocus()
+            }
+
+            "password" -> {
+                binding.etPassword.error = message
+                binding.etPassword.requestFocus()
             }
         }
+    }
+
+    private fun clearErrors() {
+        binding.etUsername.error = null
+        binding.etPassword.error = null
     }
 
     private fun navigateToRegister() {
@@ -115,9 +209,11 @@ class SignInFragment : Fragment() {
     }
 
     private fun hideKeyboard() {
-        val imm = requireContext()
-            .getSystemService(Context.INPUT_METHOD_SERVICE)
-                as InputMethodManager
+        val imm =
+            requireContext()
+                .getSystemService(
+                    Context.INPUT_METHOD_SERVICE
+                ) as InputMethodManager
 
         imm.hideSoftInputFromWindow(
             binding.root.windowToken,

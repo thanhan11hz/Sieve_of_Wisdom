@@ -18,7 +18,7 @@ import kotlinx.coroutines.withContext
         CategoryEntity::class,
         AccessEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 abstract class AppDatabase: RoomDatabase() {
