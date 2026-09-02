@@ -1,9 +1,12 @@
 package com.example.sieve_of_wisdom.ui.viewmodel
 
+import android.content.Context
+import androidx.annotation.ContentView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sieve_of_wisdom.data.model.Profile
 import com.example.sieve_of_wisdom.data.repository.AuthRepository
+import com.example.sieve_of_wisdom.worker.SyncWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,9 +29,17 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun logout(onComplete: () -> Unit) {
+    fun logout(context: Context, onComplete: () -> Unit) {
         viewModelScope.launch {
-            authRepository.logout()
+
+            val result = authRepository.logout()
+
+            if (result.isSuccess) {
+                // Neu dong bo thanh cong thi chuyen ve man hinh login
+            } else {
+                // Loi thi xu ly
+            }
+
             onComplete()
         }
     }

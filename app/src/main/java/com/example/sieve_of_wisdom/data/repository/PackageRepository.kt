@@ -38,6 +38,13 @@ class PackageRepository @Inject constructor(
             }
         }
 
+    suspend fun filterPackageByClassfication(classification: String): Result<List<Package>> =
+        runCatching {
+            withContext(Dispatchers.IO) {
+                categoryDao.getCategoryByClassification(classification).map { it.toModel() }
+            }
+        }
+
     suspend fun unlockPackage(pkg: Package) =
         runCatching {
             withContext(Dispatchers.IO) {

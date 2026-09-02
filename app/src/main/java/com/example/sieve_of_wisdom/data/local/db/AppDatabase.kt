@@ -7,6 +7,8 @@ import com.example.sieve_of_wisdom.data.local.entity.AnswerEntity
 import com.example.sieve_of_wisdom.data.local.entity.CategoryEntity
 import com.example.sieve_of_wisdom.data.local.entity.QuestionEntity
 import com.example.sieve_of_wisdom.data.local.entity.UserEntity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Database(
     entities = [
@@ -25,4 +27,11 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun answerDao(): AnswerDao;
     abstract fun categoryDao(): CategoryDao;
     abstract fun accessDao(): AccessDao;
+
+    suspend fun clearAllTablesData() {
+        withContext(Dispatchers.IO) {
+            userDao().clearAllUser()
+            accessDao().clearAccesses()
+        }
+    }
 }
