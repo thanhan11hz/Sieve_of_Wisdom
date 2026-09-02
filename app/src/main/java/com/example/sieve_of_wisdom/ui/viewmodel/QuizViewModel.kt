@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.sieve_of_wisdom.data.model.QuestionResult
 import com.example.sieve_of_wisdom.data.model.QuizSession
 import com.example.sieve_of_wisdom.data.repository.QuizRepository
+import com.example.sieve_of_wisdom.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -16,12 +17,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class QuizViewModel @Inject constructor(
-    private val quizRepository: QuizRepository
-): ViewModel() {
+    private val quizRepository: QuizRepository,
+    private val userRepository: UserRepository
+) : ViewModel() {
+
     private val _quizSessionState = MutableStateFlow<QuizSession?>(null)
     val quizSessionState: StateFlow<QuizSession?> = _quizSessionState.asStateFlow()
 
-    private val _timeLeftState = MutableStateFlow(0)
+    private val _timeLeftState = MutableStateFlow(60)
     val timeLeftState: StateFlow<Int> = _timeLeftState.asStateFlow()
 
     private val _isQuizFinished = MutableStateFlow(false)
@@ -97,7 +100,6 @@ class QuizViewModel @Inject constructor(
                 result = updatedResult
             )
         }
-
     }
 
     fun skipQuestion() {
@@ -129,6 +131,13 @@ class QuizViewModel @Inject constructor(
     fun finishQuiz() {
         timerJob?.cancel()
         _isQuizFinished.value = true
+
+        val session = _quizSessionState.value ?: return
+        val totalCoins = session.score + (_timeLeftState.value * 2)
+
+        viewModelScope.launch {
+            userRepository.addCoin(totalCoins)
+        }
     }
 
     override fun onCleared() {

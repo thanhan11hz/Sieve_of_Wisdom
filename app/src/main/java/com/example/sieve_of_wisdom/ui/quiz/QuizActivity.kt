@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.sieve_of_wisdom.databinding.ActivityQuizBinding
+import com.example.sieve_of_wisdom.ui.viewmodel.QuizViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -27,14 +28,14 @@ class QuizActivity : AppCompatActivity() {
         binding = ActivityQuizBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupUIListeners()
+        setupListeners()
         observeViewModel()
 
         val categoryId = intent.getIntExtra("EXTRA_CATEGORY_ID", 1)
-        viewModel.startQuizSession(categoryId)
+        viewModel.startQuiz(categoryId)
     }
 
-    private fun setupUIListeners() {
+    private fun setupListeners() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 showExitConfirmationDialog()
@@ -46,17 +47,17 @@ class QuizActivity : AppCompatActivity() {
         }
 
         binding.btnSubmit.setOnClickListener {
-            submitAnswer()
+            submitCurrentAnswer()
         }
 
         binding.btnSkip.setOnClickListener {
-            viewModel.submitAnswer("")
-            clearAndFocusInput()
+            viewModel.skipQuestion()
+            clearInput()
         }
 
         binding.edtAnswer.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEND || actionId == EditorInfo.IME_ACTION_DONE) {
-                submitAnswer()
+                submitCurrentAnswer()
                 true
             } else {
                 false
@@ -64,13 +65,17 @@ class QuizActivity : AppCompatActivity() {
         }
     }
 
-    private fun submitAnswer() {
+    private fun submitCurrentAnswer() {
+        val session = viewModel.quizSessionState.value ?: return
+        val currentIndex = session.currentQuestionIndex.toInt()
+        val question = session.questions.getOrNull(currentIndex) ?: return
+
         val userAnswer = binding.edtAnswer.text.toString()
-        viewModel.submitAnswer(userAnswer)
-        clearAndFocusInput()
+        viewModel.answerQuestion(userAnswer, question.answers)
+        clearInput()
     }
 
-    private fun clearAndFocusInput() {
+    private fun clearInput() {
         binding.edtAnswer.setText("")
         binding.edtAnswer.requestFocus()
     }
@@ -78,38 +83,54 @@ class QuizActivity : AppCompatActivity() {
     private fun observeViewModel() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { state ->
-                    when (state) {
-                        is QuizState.Loading -> { /* Show loader if needed */ }
-                        is QuizState.Active -> renderActiveState(state)
-                        is QuizState.Finished -> navigateToResult(state)
+                launch {
+                    viewModel.quizSessionState.collect { session ->
+                        session?.let { renderSession(it) }
+                    }
+                }
+
+                launch {
+                    viewModel.timeLeftState.collect { secondsLeft ->
+                        binding.tvTimer.text = "${secondsLeft}s"
+                        binding.progressTimer.max = 60
+                        binding.progressTimer.progress = secondsLeft
+                    }
+                }
+
+                launch {
+                    viewModel.isQuizFinished.collect { isFinished ->
+                        if (isFinished) {
+                            navigateToResult()
+                        }
                     }
                 }
             }
         }
     }
 
-    private fun renderActiveState(state: QuizState.Active) {
-        binding.tvQuestionNumber.text = "Câu ${state.questionIndex} / ${state.totalQuestions}"
-        binding.tvScore.text = "Điểm: ${state.currentScore}"
-        binding.tvTimer.text = "${state.timeRemainingSeconds}s"
+    private fun renderSession(session: com.example.sieve_of_wisdom.data.model.QuizSession) {
+        val currentIndex = session.currentQuestionIndex.toInt()
+        val question = session.questions.getOrNull(currentIndex) ?: return
 
-        binding.progressTimer.max = 60
-        binding.progressTimer.progress = state.timeRemainingSeconds
-
-        binding.tvQuestion.text = state.currentQuestion.asking
+        binding.tvQuestionNumber.text = "Câu ${currentIndex + 1} / ${session.questions.size}"
+        binding.tvScore.text = "Điểm: ${session.score}"
+        binding.tvQuestion.text = question.asking
 
         binding.edtAnswer.requestFocus()
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(binding.edtAnswer, InputMethodManager.SHOW_IMPLICIT)
     }
 
-    private fun navigateToResult(state: QuizState.Finished) {
+    private fun navigateToResult() {
+        val session = viewModel.quizSessionState.value ?: return
+        val correctCount = session.result.count { it.isCorrect }
+        val totalCoins = session.score + (viewModel.timeLeftState.value * 2)
+
         val intent = Intent(this, ResultActivity::class.java).apply {
-            putExtra("EXTRA_CORRECT_COUNT", state.correctCount)
-            putExtra("EXTRA_TOTAL_QUESTIONS", state.totalQuestions)
-            putExtra("EXTRA_COINS_EARNED", state.totalCoinsEarned)
-            putExtra("EXTRA_CATEGORY_ID", state.categoryId)
+            putExtra("EXTRA_CORRECT_COUNT", correctCount)
+            putExtra("EXTRA_TOTAL_QUESTIONS", session.questions.size)
+            putExtra("EXTRA_COINS_EARNED", totalCoins)
+            putExtra("EXTRA_CATEGORY_ID", session.categoryId)
             putExtra("EXTRA_PACKAGE_NAME", intent.getStringExtra("EXTRA_PACKAGE_NAME") ?: "Kiến thức Chung")
         }
         startActivity(intent)
