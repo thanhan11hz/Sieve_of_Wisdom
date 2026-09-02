@@ -30,7 +30,6 @@
             android:exported="true">
         </activity>
 
-        <!-- Temporary Launcher for testing -->
         <activity
             android:name=".ui.quiz.QuizActivity"
             android:exported="true"
@@ -41,9 +40,12 @@
             </intent-filter>
         </activity>
 
-        <!-- Result screen registration -->
         <activity
             android:name=".ui.quiz.ResultActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.quiz.DetailActivity"
             android:exported="false" />
     </application>
 

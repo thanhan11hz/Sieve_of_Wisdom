@@ -16,12 +16,13 @@
     <TextView
         android:id="@+id/tvQuestionNumber"
         android:layout_width="0dp"
-        android:layout_height="68dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
+        android:padding="4dp"
 
         android:text="Câu 1"
         android:textColor="@color/white"
-        android:textSize="30sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:fontFamily="@font/itim"
 
@@ -40,7 +41,6 @@
         android:id="@+id/detailContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:visibility="gone"
 
         app:layout_constraintTop_toBottomOf="@id/tvQuestionNumber"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +55,7 @@
 
             android:text="Thủ đô Việt Nam nằm ở đâu?"
             android:textColor="@color/white"
-            android:textSize="22sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:fontFamily="@font/itim"
 
@@ -79,7 +79,7 @@
 
             android:text="Đáp án: Hà Nội"
             android:textColor="@color/white"
-            android:textSize="21sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:fontFamily="@font/itim"
 
@@ -104,7 +104,7 @@
 
             android:text="Bạn trả lời: Hà Nội"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:fontFamily="@font/itim"
 

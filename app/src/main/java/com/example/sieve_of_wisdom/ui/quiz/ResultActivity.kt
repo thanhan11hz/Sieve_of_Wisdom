@@ -32,7 +32,12 @@ class ResultActivity : AppCompatActivity() {
 
     private fun setupClickListeners(categoryId: Int) {
         binding.btnAnswerDetail.setOnClickListener {
-            Toast.makeText(this, "Xem chi tiết đáp án", Toast.LENGTH_SHORT).show()
+            @Suppress("UNCHECKED_CAST")
+            val detailItems = intent.getSerializableExtra("EXTRA_DETAIL_ITEMS") as? ArrayList<QuestionDetailItem>
+            val detailIntent = Intent(this, DetailActivity::class.java).apply {
+                putExtra("EXTRA_DETAIL_ITEMS", detailItems)
+            }
+            startActivity(detailIntent)
         }
 
         binding.btnPlayAgain.setOnClickListener {

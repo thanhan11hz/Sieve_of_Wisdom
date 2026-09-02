@@ -126,12 +126,24 @@ class QuizActivity : AppCompatActivity() {
         val correctCount = session.result.count { it.isCorrect }
         val totalCoins = session.score + (viewModel.timeLeftState.value * 2)
 
+        val detailItems = ArrayList(session.questions.mapIndexed { index, question ->
+            val result = session.result.find { it.questionId == question.id }
+            QuestionDetailItem(
+                questionNumber = index + 1,
+                questionText = question.asking,
+                correctAnswer = question.answers.firstOrNull() ?: "",
+                userAnswer = result?.userAnswer,
+                isCorrect = result?.isCorrect ?: false
+            )
+        })
+
         val intent = Intent(this, ResultActivity::class.java).apply {
             putExtra("EXTRA_CORRECT_COUNT", correctCount)
             putExtra("EXTRA_TOTAL_QUESTIONS", session.questions.size)
             putExtra("EXTRA_COINS_EARNED", totalCoins)
             putExtra("EXTRA_CATEGORY_ID", session.categoryId)
-            putExtra("EXTRA_PACKAGE_NAME", intent.getStringExtra("EXTRA_PACKAGE_NAME") ?: "Kiến thức Chung")
+            putExtra("EXTRA_PACKAGE_NAME", intent.getStringExtra("EXTRA_PACKAGE_NAME") ?: "Tổng hợp")
+            putExtra("EXTRA_DETAIL_ITEMS", detailItems)
         }
         startActivity(intent)
         finish()
