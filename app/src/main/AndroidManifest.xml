@@ -17,12 +17,23 @@
         <activity
             android:name=".core.MainActivity"
             android:exported="true">
+        </activity>
+
+        <!-- Temporary Launcher for testing -->
+        <activity
+            android:name=".ui.quiz.QuizActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Result screen registration -->
+        <activity
+            android:name=".ui.quiz.ResultActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
