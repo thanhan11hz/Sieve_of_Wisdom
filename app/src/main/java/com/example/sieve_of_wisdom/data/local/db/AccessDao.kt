@@ -21,4 +21,7 @@ interface AccessDao {
 
     @Query("UPDATE access SET is_synced = 1 WHERE user_id = :userId AND category_id = :categoryId")
     suspend fun markAsSynced(userId: Int, categoryId: Int)
+
+    @Query("DELETE FROM Access")
+    suspend fun clearAccesses()
 }

@@ -1,5 +1,7 @@
 package com.example.sieve_of_wisdom.data.repository
 
+import android.content.Context
+import com.example.sieve_of_wisdom.data.local.db.AccessDao
 import com.example.sieve_of_wisdom.data.local.db.UserDao
 import com.example.sieve_of_wisdom.data.mapper.toEntity
 import com.example.sieve_of_wisdom.data.mapper.toModel
@@ -8,6 +10,8 @@ import com.example.sieve_of_wisdom.data.remote.api.AuthApiService
 import com.example.sieve_of_wisdom.data.remote.dto.LoginRequest
 import com.example.sieve_of_wisdom.data.remote.dto.RegisterRequest
 import com.example.sieve_of_wisdom.util.AuthManager
+import com.example.sieve_of_wisdom.worker.SyncWorker
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -15,9 +19,12 @@ import javax.inject.Singleton
 
 @Singleton
 class AuthRepository @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val authApiService: AuthApiService,
     private val authManager: AuthManager,
-    private val userDao: UserDao
+    private val userDao: UserDao,
+    private val accessDao: AccessDao,
+    private val syncRepository: SyncRepository
 ) {
     suspend fun login(username: String, password: String): Result<Profile> =
         runCatching {
@@ -31,6 +38,7 @@ class AuthRepository @Inject constructor(
 
                     val userEntity = authResponse.user.toEntity()
                     userDao.insertUser(userEntity)
+                    SyncWorker.enqueueSync(context)
                     userEntity.toModel()
                 } else {
                     val errorMessage = response.errorBody()?.string() ?: "Wrong username or password (${response.code()})"
@@ -51,6 +59,7 @@ class AuthRepository @Inject constructor(
 
                     val userEntity = authResponse.user.toEntity()
                     userDao.insertUser(userEntity)
+                    SyncWorker.enqueueSync(context)
                     userEntity.toModel()
                 } else {
                     val errorMessage = response.errorBody()?.string() ?: "Register fails"
@@ -59,10 +68,15 @@ class AuthRepository @Inject constructor(
             }
         }
 
-    suspend fun logout() =
-        withContext(Dispatchers.IO) {
-            authManager.clear();
-            userDao.clearAllUser();
+    suspend fun logout(): Result<Unit> =
+        runCatching {
+            withContext(Dispatchers.IO) {
+                SyncWorker.cancelSync(context)
+                syncRepository.syncAllData()
+                authManager.clear();
+                userDao.clearAllUser();
+                accessDao.clearAccesses();
+            }
         }
 
     suspend fun getCurrentUser(): Profile? =

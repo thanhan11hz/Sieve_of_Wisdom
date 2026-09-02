@@ -60,7 +60,7 @@ object NetworkModule {
     ): Retrofit {
 
         return Retrofit.Builder()
-            .baseUrl("http://10.0.2.2")
+            .baseUrl("https://sieve-of-wisdom-backend.onrender.com")
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
