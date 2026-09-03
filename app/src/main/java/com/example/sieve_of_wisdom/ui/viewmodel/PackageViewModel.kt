@@ -55,7 +55,7 @@ class PackageViewModel @Inject constructor(
 
     fun filterPackageByClassification(classification: String) {
         viewModelScope.launch {
-            packageRepository.filterPackageByClassfication(classification)
+            packageRepository.filterPackageByClassification(classification)
                 .onSuccess { list ->
                     _packageState.value = list
                 }

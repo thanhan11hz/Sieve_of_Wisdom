@@ -9,5 +9,7 @@ data class Package(
 
     val isUnlocked: Boolean,
 
-    val price: Int
+    val price: Int,
+
+    val quantity: Int
 )

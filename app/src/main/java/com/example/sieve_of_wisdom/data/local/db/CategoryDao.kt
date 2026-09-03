@@ -23,10 +23,14 @@ interface CategoryDao {
             CASE 
                 WHEN Access.category_id IS NOT NULL THEN 1
                 ELSE 0
-            END AS isUnlocked
+            END AS isUnlocked,
+            COUNT(Question.id) as quantity
         FROM Category
         LEFT JOIN Access
             ON Category.id = Access.category_id
+        LEFT JOIN Question
+            ON Question.category_id = Category.id
+        GROUP BY Category.id, Access.category_id
     """)
     suspend fun getCategoryWithAccess(): List<CategoryWithAccess>;
 
@@ -37,11 +41,15 @@ interface CategoryDao {
             CASE 
                 WHEN Access.category_id IS NOT NULL THEN 1
                 ELSE 0
-            END AS isUnlocked
+            END AS isUnlocked,
+            COUNT(Question.id) as quantity
         FROM Category
         LEFT JOIN Access
             ON Category.id = Access.category_id
+        LEFT JOIN Question
+            ON Question.category_id = Category.id
         WHERE Category.name LIKE '%' || :query || "%"
+        GROUP BY Category.id, Access.category_id
     """)
     suspend fun getCategoryBySearch(query: String): List<CategoryWithAccess>;
 
@@ -52,11 +60,15 @@ interface CategoryDao {
             CASE 
                 WHEN Access.category_id IS NOT NULL THEN 1
                 ELSE 0
-            END AS isUnlocked
+            END AS isUnlocked,
+            COUNT(Question.id) as quantity
         FROM Category
         LEFT JOIN Access
             ON Category.id = Access.category_id
+        LEFT JOIN Question
+            ON Question.category_id = Category.id
         WHERE Category.classification = :classification
+        GROUP BY Category.id, Access.category_id
     """)
     suspend fun getCategoryByClassification(classification: String): List<CategoryWithAccess>;
 
@@ -64,11 +76,15 @@ interface CategoryDao {
     @Query("""
         SELECT 
             Category.*,
-            0 AS isUnlocked
+            0 AS isUnlocked,
+            COUNT(Question.id) as quantity
         FROM Category
         LEFT JOIN Access
             ON Category.id = Access.category_id
+        LEFT JOIN Question
+            ON Question.category_id = Category.id
         WHERE Access.category_id IS NULL
+        GROUP BY Category.id, Access.category_id
     """)
     suspend fun getLockedCategory(): List<CategoryWithAccess>;
 
@@ -76,11 +92,15 @@ interface CategoryDao {
     @Query("""
         SELECT 
             Category.*,
-            1 AS isUnlocked
+            1 AS isUnlocked,
+            COUNT(Question.id) as quantity
         FROM Category
         JOIN Access
             ON Category.id = Access.category_id
+        LEFT JOIN Question
+            ON Question.category_id = Category.id
         WHERE Access.category_id IS NOT NULL
+        GROUP BY Category.id, Access.category_id
     """)
     suspend fun getUnlockedCategory(): List<CategoryWithAccess>;
 }
