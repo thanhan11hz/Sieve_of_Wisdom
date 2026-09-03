@@ -18,6 +18,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.collections.map
+import android.util.Log
 
 @Singleton
 class SyncRepository @Inject constructor(
@@ -32,6 +33,7 @@ class SyncRepository @Inject constructor(
 
     suspend fun syncAllData(): Result<Unit> = withContext(Dispatchers.IO) {
         runCatching {
+            Log.d("SYNC_DEBUG","========== SYNC REPOSITORY START ==========")
             val user = userDao.getUser() ?: return@runCatching
 
             val unsyncedAccessList = accessDao.getUnsyncedAccess()
@@ -56,12 +58,40 @@ class SyncRepository @Inject constructor(
             if (remoteCategoryResponse.isSuccessful) {
                 remoteCategoryResponse.body()?.let { remoteList ->
                     if (remoteList.isNotEmpty()) {
-                        val entities = remoteList.map { it.toEntity() }
+                        val entities = remoteList.map { it.toCategoryEntity() }
                         categoryDao.insertCategories(entities)
                         val safeSyncTime = System.currentTimeMillis() - 5000
                         updateManager.saveLastUpdatedTime(safeSyncTime)
                     }
                 }
+            }
+            // val remoteCategoryResponse =  syncApiService.getCategory(0L)
+
+            Log.d(
+                "SYNC_DEBUG",
+                "Category HTTP = ${remoteCategoryResponse.code()}"
+            )
+
+            if (remoteCategoryResponse.isSuccessful) {
+                val remoteList = remoteCategoryResponse.body()
+                Log.d(
+                    "SYNC_DEBUG",
+                    "Category API count = ${remoteList?.size}"
+                )
+                remoteList?.let { list ->
+                    val entities = list.map {it.toCategoryEntity()}
+                    categoryDao.insertCategories(entities)
+                    Log.d(
+                        "SYNC_DEBUG",
+                        "Category inserted = ${entities.size}"
+                    )
+                }
+
+            } else {
+                Log.e(
+                    "SYNC_DEBUG",
+                    "Category error = ${remoteCategoryResponse.errorBody()?.string()}"
+                )
             }
 
             val remoteAccessResponse = syncApiService.getUserAccess(user.id)
@@ -84,14 +114,7 @@ class SyncRepository @Inject constructor(
                 }
             }
 
-            val categoriesResponse = syncApiService.getCategories()
 
-            if (categoriesResponse.isSuccessful) {
-                categoriesResponse.body()?.let { categoryDtoList ->
-                    val categoryEntities = categoryDtoList.map { it.toCategoryEntity() }
-                    categoryDao.insertCategories(categoryEntities)
-                }
-            }
         }
     }
 }

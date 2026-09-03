@@ -91,9 +91,7 @@ class PackageRepository @Inject constructor(
     ): Result<List<Package>> =
         runCatching {
             withContext(Dispatchers.IO) {
-
                 val userId = getCurrentUserId()
-
                 categoryDao
                     .getCategoryByClassification(
                         userId,

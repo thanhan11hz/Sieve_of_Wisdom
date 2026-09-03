@@ -4,11 +4,9 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Insert
 import androidx.room.Transaction
 import com.example.sieve_of_wisdom.data.local.entity.CategoryEntity
 import com.example.sieve_of_wisdom.data.local.relation.CategoryWithAccess
-import androidx.room.OnConflictStrategy
 
 @Dao
 interface CategoryDao {
@@ -113,8 +111,5 @@ interface CategoryDao {
     @Query("SELECT DISTINCT classification FROM Category")
     suspend fun getAllClassifications(): List<String>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCategories(
-        categories: List<CategoryEntity>
-    )
+
 }

@@ -90,14 +90,9 @@ class AuthRepository @Inject constructor(
                         password = password
                     )
                 )
-
                 if (response.isSuccessful) {
-
                     val registerResponse =
-                        response.body()
-                            ?: throw Exception(
-                                "Register response is empty"
-                            )
+                        response.body()?: throw Exception("Register response is empty")
 
                     Log.d(
                         "AUTH_REGISTER",
@@ -105,10 +100,8 @@ class AuthRepository @Inject constructor(
                     )
 
                 } else {
-
                     val errorBody =
                         response.errorBody()?.string()
-
                     throw Exception(
                         "Register failed: HTTP ${response.code()} ${response.message()}\n$errorBody"
                     )

@@ -4,16 +4,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:id="@+id/home_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:background="@drawable/bg_main"
-
     android:clipChildren="false"
     android:clipToPadding="false">
-
 
     <!-- ===================================================== -->
     <!-- HEADER -->
@@ -23,15 +19,11 @@
         android:id="@+id/iv_home_avatar"
         android:layout_width="60dp"
         android:layout_height="60dp"
-
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
-
         android:src="@drawable/ic_launcher_foreground"
         android:scaleType="centerCrop"
-
         android:contentDescription="Avatar"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,57 +31,43 @@
         android:id="@+id/tv_home_greeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_marginStart="10dp"
-
         android:fontFamily="@font/itim"
         android:text="Chào, Khang Thịnh"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-
         app:layout_constraintStart_toEndOf="@id/iv_home_avatar"
         app:layout_constraintTop_toTopOf="@id/iv_home_avatar"
         app:layout_constraintBottom_toTopOf="@id/tv_home_streak" />
-
 
     <TextView
         android:id="@+id/tv_home_streak"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:fontFamily="@font/itim"
         android:text="Đừng từ bỏ!!"
         android:textColor="@color/black"
         android:textSize="15sp"
-
         app:layout_constraintStart_toStartOf="@id/tv_home_greeting"
         app:layout_constraintTop_toBottomOf="@id/tv_home_greeting" />
 
-
     <!-- ===================================================== -->
-    <!-- STREAK -->
+    <!-- COIN / POINTS -->
     <!-- ===================================================== -->
 
     <com.example.sieve_of_wisdom.ui.neo.NeoFrameLayout
         android:id="@+id/streak_container"
-
         android:layout_width="95dp"
         android:layout_height="35dp"
-
         android:layout_marginEnd="20dp"
-
         app:neoBackgroundColor="#6BD3D8"
-
         app:neoShadowColor="@color/black"
         app:neoShadowX="3dp"
         app:neoShadowY="4dp"
-
         app:neoStrokeColor="@color/black"
         app:neoStrokeWidth="2dp"
-
         app:neoCornerRadius="20dp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/iv_home_avatar">
 
@@ -101,33 +79,28 @@
             android:orientation="horizontal">
 
             <!-- STAR -->
+
             <com.example.sieve_of_wisdom.ui.neo.NeoTextView
                 android:id="@+id/tv_streak_star"
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_marginEnd="6dp"
-
                 android:fontFamily="@font/roboto"
                 android:text="★"
                 android:textColor="@color/primary_yellow"
                 android:textSize="22sp"
-
                 app:neoShadowColor="@color/black"
                 app:neoShadowX="2dp"
                 app:neoShadowY="2dp"
-
                 app:neoStrokeColor="@color/black"
                 app:neoStrokeWidth="2dp" />
 
             <!-- POINTS -->
+
             <TextView
                 android:id="@+id/tv_coin"
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:fontFamily="@font/roboto"
                 android:text="15"
                 android:textColor="@color/black"
@@ -138,38 +111,30 @@
 
     </com.example.sieve_of_wisdom.ui.neo.NeoFrameLayout>
 
-
     <!-- ===================================================== -->
     <!-- PROGRESS TITLE -->
     <!-- ===================================================== -->
 
     <com.example.sieve_of_wisdom.ui.neo.NeoTextView
         android:id="@+id/tv_progress_title"
-
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
-
         android:fontFamily="@font/itim"
         android:text="Tiến trình hiện tại"
         android:textColor="@color/black"
         android:textSize="26sp"
         android:textStyle="bold"
-
         app:neoShadowColor="@color/primary_yellow"
         app:neoShadowX="0dp"
         app:neoShadowY="0dp"
-
         app:neoStrokeColor="@color/black"
         app:neoStrokeWidth="0dp"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_home_avatar" />
-
 
     <!-- ===================================================== -->
     <!-- PROGRESS BAR -->
@@ -177,73 +142,54 @@
 
     <FrameLayout
         android:id="@+id/progress_container"
-
         android:layout_width="0dp"
         android:layout_height="18dp"
-
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
-
         android:clipChildren="false"
         android:clipToPadding="false"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tv_progress_count"
         app:layout_constraintTop_toBottomOf="@id/tv_progress_title">
-
 
         <!-- HARD SHADOW -->
 
         <View
             android:id="@+id/progress_shadow"
-
             android:layout_width="match_parent"
             android:layout_height="12dp"
-
             android:translationX="2dp"
             android:translationY="3dp"
-
             android:background="@drawable/bg_neo_shadow" />
-
 
         <!-- PROGRESS -->
 
         <ProgressBar
             android:id="@+id/progress_current"
-
             style="?android:attr/progressBarStyleHorizontal"
-
             android:layout_width="match_parent"
             android:layout_height="12dp"
-
             android:max="37"
             android:progress="7"
-
             android:progressDrawable="@drawable/bg_home_progress" />
 
     </FrameLayout>
 
-
     <TextView
         android:id="@+id/tv_progress_count"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_marginStart="8dp"
         android:layout_marginEnd="20dp"
-
         android:fontFamily="@font/roboto"
         android:text="7/37"
         android:textColor="@color/black"
         android:textSize="12sp"
         android:textStyle="bold"
-
         app:layout_constraintStart_toEndOf="@id/progress_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/progress_container"
         app:layout_constraintBottom_toBottomOf="@id/progress_container" />
-
 
     <!-- ===================================================== -->
     <!-- QUIZ TITLE -->
@@ -251,31 +197,24 @@
 
     <com.example.sieve_of_wisdom.ui.neo.NeoTextView
         android:id="@+id/tv_quiz_title"
-
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
         android:layout_marginStart="20dp"
         android:layout_marginTop="17dp"
         android:layout_marginEnd="20dp"
-
         android:fontFamily="@font/itim"
         android:text="Cùng làm quiz nào!"
         android:textColor="@color/black"
         android:textSize="34sp"
         android:textStyle="bold"
-
         app:neoShadowColor="@color/primary_yellow"
         app:neoShadowX="0dp"
         app:neoShadowY="0dp"
-
         app:neoStrokeColor="@color/black"
         app:neoStrokeWidth="0dp"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/progress_container" />
-
 
     <!-- ===================================================== -->
     <!-- TOPIC HORIZONTAL SCROLL -->
@@ -285,78 +224,45 @@
         android:id="@+id/topic_scroll"
         android:layout_width="0dp"
         android:layout_height="80dp"
-
         android:layout_marginTop="15dp"
-
         android:clipChildren="false"
         android:clipToPadding="false"
         android:scrollbars="none"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_quiz_title">
+
+        <!-- Topics are added dynamically from HomeViewModel -->
 
         <LinearLayout
             android:id="@+id/topic_container"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-
             android:orientation="horizontal"
             android:gravity="center_vertical"
-
             android:clipChildren="false"
-            android:clipToPadding="false">
-
-            <include
-                layout="@layout/item_quiz_topic" />
-
-            <include
-                layout="@layout/item_quiz_topic" />
-
-            <include
-                layout="@layout/item_quiz_topic" />
-
-            <include
-                layout="@layout/item_quiz_topic" />
-
-        </LinearLayout>
+            android:clipToPadding="false" />
 
     </HorizontalScrollView>
 
-
     <!-- ===================================================== -->
-    <!-- QUIZ PACKAGE CONTAINER -->
-    <!-- ===================================================== -->
-
-
-    <!-- ===================================================== -->
-    <!-- BOTTOM NAVIGATION -->
+    <!-- QUIZ PACKAGE LIST -->
     <!-- ===================================================== -->
 
     <com.example.sieve_of_wisdom.ui.neo.NeoFrameLayout
         android:id="@+id/package_list_container"
-
         android:layout_width="0dp"
         android:layout_height="0dp"
-
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="12dp"
-
         android:padding="0dp"
-
-        app:layout_constraintBottom_toTopOf="@id/home_bottom_navigation"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topic_scroll"
-        app:layout_constraintVertical_bias="0.0"
-
+        app:layout_constraintBottom_toBottomOf="parent"
         app:neoBackgroundColor="@color/white"
-
         app:neoCornerRadius="14dp"
         app:neoShadowColor="@color/black"
         app:neoShadowX="4dp"
@@ -364,22 +270,20 @@
         app:neoStrokeColor="@color/black"
         app:neoStrokeWidth="2dp">
 
+        <!-- PACKAGE LIST -->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_quiz_packages"
-
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
             android:clipChildren="false"
             android:clipToPadding="true"
             android:overScrollMode="never"
-
             android:padding="20dp"
-
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-
             tools:listitem="@layout/item_quiz_package" />
+
+        <!-- EMPTY STATE -->
 
         <LinearLayout
             android:id="@+id/empty_package_container"
@@ -411,95 +315,5 @@
         </LinearLayout>
 
     </com.example.sieve_of_wisdom.ui.neo.NeoFrameLayout>
-
-    <com.example.sieve_of_wisdom.ui.neo.NeoFrameLayout
-        android:id="@+id/home_bottom_navigation"
-
-        android:layout_width="0dp"
-        android:layout_height="75dp"
-
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="15dp"
-
-        app:neoBackgroundColor="@color/primary_yellow"
-
-        app:neoShadowColor="@color/black"
-        app:neoShadowX="4dp"
-        app:neoShadowY="6dp"
-
-        app:neoStrokeColor="@color/black"
-        app:neoStrokeWidth="2dp"
-
-        app:neoCornerRadius="40dp"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-
-        <LinearLayout
-            android:id="@+id/bottom_nav_main"
-
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            android:gravity="center"
-            android:orientation="horizontal">
-
-
-            <!-- HOME -->
-
-            <ImageButton
-                android:id="@+id/btn_nav_home"
-
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-
-                android:background="@android:color/transparent"
-
-                android:contentDescription="Home"
-
-                android:src="@drawable/ic_home" />
-
-
-            <!-- SHOP -->
-
-            <ImageButton
-                android:id="@+id/btn_nav_shop"
-
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-
-                android:background="@android:color/transparent"
-
-                android:contentDescription="Shop"
-
-                android:src="@drawable/ic_shop" />
-
-
-            <!-- COLLECTION -->
-
-            <ImageButton
-                android:id="@+id/btn_nav_pvp"
-
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-
-                android:background="@android:color/transparent"
-
-                android:padding="12dp"
-
-                android:scaleType="fitCenter"
-
-                android:contentDescription="PvP"
-                android:src="@drawable/ic_pvp" />
-        </LinearLayout>
-
-    </com.example.sieve_of_wisdom.ui.neo.NeoFrameLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

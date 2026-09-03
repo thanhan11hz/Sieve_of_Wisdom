@@ -35,7 +35,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         setupRecyclerView()
         setupTopics()
-        setupBottomNavigation()
+//        setupBottomNavigation()
         observeViewModel()
     }
 
@@ -149,38 +149,38 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             else -> classification
         }
     }
-
-    private fun setupBottomNavigation() {
-
-        binding.btnNavHome.setOnClickListener {
-            // Đang ở Home nên không cần navigate.
-        }
-
-        binding.btnNavShop.setOnClickListener {
-            Toast.makeText(
-                requireContext(),
-                "Cửa hàng",
-                Toast.LENGTH_SHORT
-            ).show()
-
-            // TODO:
-            // navigate tới StoreFragment
-        }
-        binding.btnGoToStore.setOnClickListener {
-            // TODO navigate StoreFragment
-        }
-
-        binding.btnNavPvp.setOnClickListener {
-            Toast.makeText(
-                requireContext(),
-                "PvP",
-                Toast.LENGTH_SHORT
-            ).show()
-
-            // TODO:
-            // navigate tới PvP
-        }
-    }
+//
+//    private fun setupBottomNavigation() {
+//
+//        binding.btnNavHome.setOnClickListener {
+//            // Đang ở Home nên không cần navigate.
+//        }
+//
+//        binding.btnNavShop.setOnClickListener {
+//            Toast.makeText(
+//                requireContext(),
+//                "Cửa hàng",
+//                Toast.LENGTH_SHORT
+//            ).show()
+//
+//            // TODO:
+//            // navigate tới StoreFragment
+//        }
+//        binding.btnGoToStore.setOnClickListener {
+//            // TODO navigate StoreFragment
+//        }
+//
+//        binding.btnNavPvp.setOnClickListener {
+//            Toast.makeText(
+//                requireContext(),
+//                "PvP",
+//                Toast.LENGTH_SHORT
+//            ).show()
+//
+//            // TODO:
+//            // navigate tới PvP
+//        }
+//    }
 
     private fun handlePackageClick(pkg: Package) {
         viewModel.selectPackage(pkg)
