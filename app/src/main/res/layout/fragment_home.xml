@@ -18,7 +18,6 @@
         android:id="@+id/btn_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="20dp"
         android:fontFamily="@font/roboto"
         android:text="Đăng xuất"
@@ -29,33 +28,22 @@
         android:focusable="true"
         android:padding="4dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/iv_home_avatar"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/ic_launcher_foreground"
-        android:scaleType="centerCrop"
-        android:contentDescription="Avatar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/tv_home_greeting"
+        app:layout_constraintBottom_toBottomOf="@id/tv_home_greeting" />
 
     <TextView
         android:id="@+id/tv_home_greeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/itim"
         android:text="Chào, Khang Thịnh"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/iv_home_avatar"
-        app:layout_constraintTop_toTopOf="@id/iv_home_avatar"
-        app:layout_constraintBottom_toTopOf="@id/tv_home_streak" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_home_streak"
@@ -150,7 +138,7 @@
         app:neoStrokeWidth="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_home_avatar" />
+        app:layout_constraintTop_toBottomOf="@id/streak_container" />
 
     <!-- ===================================================== -->
     <!-- PROGRESS BAR -->
@@ -319,12 +307,35 @@
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
-            <Button
+            <FrameLayout
                 android:id="@+id/btn_go_to_store"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Đến cửa hàng" />
+                android:layout_width="128dp"
+                android:layout_height="47dp"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+
+                <View
+                    android:layout_width="125dp"
+                    android:layout_height="43dp"
+                    android:background="@drawable/bg_neo_shadow_button"
+                    android:translationX="3dp"
+                    android:translationY="3dp" />
+
+                <TextView
+                    android:id="@+id/tv_go_to_store"
+                    android:layout_width="125dp"
+                    android:layout_height="43dp"
+                    android:background="@drawable/bg_neo_button"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="center"
+                    android:text="Đến cửa hàng"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+            </FrameLayout>
 
         </LinearLayout>
 

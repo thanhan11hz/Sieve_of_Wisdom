@@ -214,7 +214,9 @@ class HomeViewModel @Inject constructor(
 
     private fun applyFilters() {
 
-        var result = allPackages
+        var result = allPackages.filter { pkg ->
+            pkg.isUnlocked
+        }
     
         selectedTopic?.let { classification ->
     
