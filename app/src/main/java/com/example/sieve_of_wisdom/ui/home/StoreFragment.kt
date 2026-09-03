@@ -8,7 +8,10 @@ import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sieve_of_wisdom.R
 import com.example.sieve_of_wisdom.databinding.FragmentStoreBinding
 import com.example.sieve_of_wisdom.ui.viewmodel.PackageViewModel
@@ -21,9 +24,11 @@ import kotlin.getValue
 @AndroidEntryPoint
 class StoreFragment : Fragment() {
 
-    private val user: UserViewModel by viewModels()
     private var _binding: FragmentStoreBinding? = null
     private val binding get() = _binding!!
+    private val user: UserViewModel by viewModels()
+    private val packages: PackageViewModel by viewModels()
+    private lateinit var adapter: TopicCardAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,11 +57,26 @@ class StoreFragment : Fragment() {
             }
         }
 
+        adapter = TopicCardAdapter()
+        binding.rvTopics.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvTopics.adapter = adapter
+
+        // Collect StateFlow safely tied to view lifecycle
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                packages.packageState.collect { newList ->
+                    // Automatically animates and renders changes using DiffUtil
+                    adapter.submitList(newList)
+                }
+            }
+        }
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 }
 
