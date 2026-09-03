@@ -1,27 +1,20 @@
 package com.example.sieve_of_wisdom.core
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
-import com.example.sieve_of_wisdom.R
-import com.example.sieve_of_wisdom.data.remote.api.AuthApiService
-import com.example.sieve_of_wisdom.data.remote.dto.LoginRequest
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import javax.inject.Inject
-import android.widget.ImageButton
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
-
+import com.example.sieve_of_wisdom.R
+import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,7 +25,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNavigation() {
-        val navHost = supportFragmentManager.findFragmentById(R.id.main) as NavHostFragment
+        val navHost =
+            supportFragmentManager.findFragmentById(R.id.main) as NavHostFragment
+
         val navController = navHost.navController
 
         findViewById<ImageButton>(R.id.btn_nav_home)
@@ -52,13 +47,13 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
-                val showBottomBar =
-                        destination.id == R.id.homeFragment ||
+            val showBottomBar =
+                destination.id == R.id.homeFragment ||
                         destination.id == R.id.storeFragment ||
                         destination.id == R.id.pvpFragment
 
-                findViewById<View>(R.id.main_bottom_navigation)
-                    .isVisible = showBottomBar
+            findViewById<View>(R.id.main_bottom_navigation)
+                .isVisible = showBottomBar
         }
     }
 }

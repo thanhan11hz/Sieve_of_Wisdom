@@ -53,6 +53,7 @@ room {
 
 dependencies {
 
+    implementation(libs.androidx.camera.camera2.pipe)
     // AndroidX & UI
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

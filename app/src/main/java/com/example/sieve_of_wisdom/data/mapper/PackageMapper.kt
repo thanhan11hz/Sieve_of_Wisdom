@@ -13,7 +13,8 @@ fun CategoryWithAccess.toModel(): Package {
         name = category.name,
         classification = category.classification,
         isUnlocked = isUnlocked,
-        price = category.price
+        price = category.price,
+        quantity = quantity
     )
 }
 

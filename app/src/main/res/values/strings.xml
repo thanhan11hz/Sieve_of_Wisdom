@@ -1,4 +1,6 @@
 <resources>
-    <string name="app_name">sieve-of-wisdom</string>
     <string name="bg_input_radius">4dp</string>
+    <string name="app_name">Sieve_of_Wisdom</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

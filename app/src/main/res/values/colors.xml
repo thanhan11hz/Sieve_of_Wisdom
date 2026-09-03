@@ -2,19 +2,24 @@
 
 <resources>
 
+    <!-- Neo Brutalism / Common colors -->
+    <color name="black">#000000</color>
+    <color name="white">#FAF9F6</color>
+
     <!-- Main page background -->
     <color name="register_background">#FFF7EF</color>
 
     <!-- Input -->
     <color name="input_background">#FFFEFC</color>
     <color name="input_hint">#3F3F3F</color>
+
     <color name="background">#FFF8F0</color>
     <color name="quiz_blue">#19B5D1</color>
     <color name="quiz_locked_red">#FF4B4B</color>
 
-
     <!-- Register button -->
     <color name="primary_yellow">#FFD42A</color>
+
     <!-- App background -->
     <color name="app_background">#FFD83D</color>
 
@@ -24,10 +29,6 @@
     <!-- Question states -->
     <color name="question_correct">#43FF59</color>
     <color name="question_wrong">#FF4D4D</color>
-
-    <!-- Common colors -->
-    <color name="black">#000000</color>
-    <color name="white">#FAF9F6</color>
 
     <!-- Buttons -->
     <color name="button_yellow">#FFD32F</color>
