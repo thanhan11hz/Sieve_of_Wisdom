@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sieve_of_wisdom.data.model.QuestionResult
 import com.example.sieve_of_wisdom.data.model.QuizSession
-import com.example.sieve_of_wisdom.data.repository.PackageRepository
+import com.example.sieve_of_wisdom.data.util.QuizProgressManager
 import com.example.sieve_of_wisdom.data.repository.QuizRepository
 import com.example.sieve_of_wisdom.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class QuizViewModel @Inject constructor(
     private val quizRepository: QuizRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val quizProgressManager: QuizProgressManager
 ) : ViewModel() {
 
     private val _quizSessionState = MutableStateFlow<QuizSession?>(null)
@@ -151,6 +152,15 @@ class QuizViewModel @Inject constructor(
         )
 
         viewModelScope.launch {
+            val user = userRepository.getCurrentUser()
+
+            if (user != null) {
+                quizProgressManager.markCompleted(
+                    userId = user.id,
+                    categoryId = session.categoryId
+                )
+            }
+
             userRepository.addCoin(totalCoins)
         }
     }

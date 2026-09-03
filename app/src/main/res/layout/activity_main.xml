@@ -59,6 +59,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
                 android:background="@android:color/transparent"
                 android:contentDescription="Home"
                 android:src="@drawable/ic_home" />
@@ -70,9 +72,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
                 android:background="@android:color/transparent"
-                android:contentDescription="Shop"
-                android:src="@drawable/ic_shop" />
+                android:contentDescription="Store"
+                android:src="@drawable/ic_store" />
 
             <!-- PVP -->
 
