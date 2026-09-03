@@ -23,9 +23,6 @@
     <color name="button_gray">#E0E0E0</color>
     <color name="progress_yellow">#FFD43B</color>
 
-    <!-- Neo Brutalism -->
-    <color name="black">#000000</color>
-
     <!-- Main page background -->
     <color name="register_background">#FFF7EF</color>
 
@@ -35,5 +32,4 @@
 
     <!-- Register button -->
     <color name="primary_yellow">#FFD42A</color>
-    <color name="white">#FAF9F6</color>
 </resources>

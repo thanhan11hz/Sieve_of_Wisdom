@@ -26,7 +26,7 @@
         android:maxLines="1"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:textColor="@color/neo_black"
+        android:textColor="@color/black"
         android:textColorHint="@color/input_hint"
         android:textSize="14sp" />
 
