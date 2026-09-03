@@ -206,19 +206,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
-                
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/noResult"
-                    android:text="Không có gói phù hợp với tìm kiếm"
-                    android:textColor="#000000"
-                    android:textColorHint="#666666"
-                    android:textSize="20sp"
-                    android:elevation="6dp"
-                    android:background="@drawable/bg_main_card"
-                    android:gravity="center"
-                    android:visibility="gone"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvTopics"
@@ -235,6 +222,19 @@
                     android:layout_marginBottom="15dp"
                     android:layout_marginHorizontal="15dp"
                     tools:listitem="@layout/item_topic_card" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/noResult"
+                    android:text="Không có gói phù hợp với tìm kiếm"
+                    android:textColor="#000000"
+                    android:textColorHint="#666666"
+                    android:textSize="20sp"
+                    android:elevation="0dp"
+                    android:background="@drawable/bg_main_card"
+                    android:gravity="center"
+                    android:visibility="gone"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
