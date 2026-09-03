@@ -59,35 +59,70 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
-
         <!-- ==================== QUESTIONS ==================== -->
 
-        <TextView
-            android:id="@+id/tv_package_questions"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/questionInfo"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-            android:fontFamily="@font/roboto"
-            android:text="▣   30 câu hỏi"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_chat"
+                android:scaleType="fitCenter"
+                android:contentDescription="Số câu hỏi" />
+
+            <TextView
+                android:id="@+id/tv_package_questions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/roboto"
+                android:text="30 câu hỏi"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:includeFontPadding="false" />
+
+        </LinearLayout>
 
 
         <!-- ==================== TIME ==================== -->
 
-        <TextView
-            android:id="@+id/tv_package_time"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/durationInfo"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-            android:fontFamily="@font/roboto"
-            android:text="◷   60 giây"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_clock"
+                android:scaleType="fitCenter"
+                android:contentDescription="Thời gian" />
+
+            <TextView
+                android:id="@+id/tv_package_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/roboto"
+                android:text="60 giây"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:includeFontPadding="false" />
+
+        </LinearLayout>
+
+
 
 
         <!-- ==================== BOTTOM ROW ==================== -->
