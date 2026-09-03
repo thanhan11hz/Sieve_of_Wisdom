@@ -2,6 +2,7 @@ package com.example.sieve_of_wisdom.core
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge

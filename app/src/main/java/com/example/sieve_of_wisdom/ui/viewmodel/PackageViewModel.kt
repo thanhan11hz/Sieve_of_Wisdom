@@ -62,11 +62,23 @@ class PackageViewModel @Inject constructor(
         }
     }
 
-    fun unlockPackage(pkg: Package, onSuccess: () -> Unit, onError: (Throwable) -> Unit) {
+    fun unlockPackage(
+        pkg: Package,
+        onSuccess: () -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
         viewModelScope.launch {
             packageRepository.unlockPackage(pkg)
                 .onSuccess {
-                    loadAllPackages()
+
+                    _packageState.value = _packageState.value.map { item ->
+                        if (item.categoryId == pkg.categoryId) {
+                            item.copy(isUnlocked = true)
+                        } else {
+                            item
+                        }
+                    }
+
                     onSuccess()
                 }
                 .onFailure { error ->
