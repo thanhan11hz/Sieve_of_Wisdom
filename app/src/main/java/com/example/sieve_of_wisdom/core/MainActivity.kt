@@ -7,6 +7,9 @@ import android.view.View
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import com.example.sieve_of_wisdom.R
@@ -21,10 +24,24 @@ class MainActivity : AppCompatActivity() {
 
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-
+        hideSystemBars()
         setupBottomNavigation()
     }
+    private fun hideSystemBars() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
+        WindowInsetsControllerCompat(
+            window,
+            window.decorView
+        ).apply {
+            hide(
+                WindowInsetsCompat.Type.statusBars() or
+                        WindowInsetsCompat.Type.navigationBars()
+            )
+            systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
+    }
     private fun setupBottomNavigation() {
         val navHost =
             supportFragmentManager.findFragmentById(R.id.main) as NavHostFragment

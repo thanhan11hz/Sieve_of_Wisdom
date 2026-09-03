@@ -1,46 +1,72 @@
 package com.example.sieve_of_wisdom.ui.quiz
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.sieve_of_wisdom.databinding.ActivityQuizBinding
+import androidx.navigation.fragment.findNavController
+import com.example.sieve_of_wisdom.R
+import com.example.sieve_of_wisdom.databinding.FragmentQuizBinding
 import com.example.sieve_of_wisdom.ui.viewmodel.QuizViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class QuizActivity : AppCompatActivity() {
+class QuizFragment : Fragment() {
 
-    private lateinit var binding: ActivityQuizBinding
+    private var _binding: FragmentQuizBinding? = null
+    private val binding
+        get() = _binding!!
+
     private val viewModel: QuizViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityQuizBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentQuizBinding.inflate(
+            inflater,
+            container,
+            false
+        )
+
+        return binding.root
+    }
+
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
+        super.onViewCreated(view, savedInstanceState)
 
         setupListeners()
         observeViewModel()
 
-        val categoryId = intent.getIntExtra("EXTRA_CATEGORY_ID", 1)
+        val categoryId = requireArguments().getInt("category_id")
         viewModel.startQuiz(categoryId)
     }
 
     private fun setupListeners() {
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                showExitConfirmationDialog()
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+
+                override fun handleOnBackPressed() {
+                    showExitConfirmationDialog()
+                }
             }
-        })
+        )
 
         binding.btnBack.setOnClickListener {
             showExitConfirmationDialog()
@@ -88,22 +114,6 @@ class QuizActivity : AppCompatActivity() {
                         session?.let { renderSession(it) }
                     }
                 }
-
-                launch {
-                    viewModel.timeLeftState.collect { secondsLeft ->
-                        binding.tvTimer.text = "${secondsLeft}s"
-                        binding.progressTimer.max = 60
-                        binding.progressTimer.progress = secondsLeft
-                    }
-                }
-
-                launch {
-                    viewModel.isQuizFinished.collect { isFinished ->
-                        if (isFinished) {
-                            navigateToResult()
-                        }
-                    }
-                }
             }
         }
     }
@@ -117,43 +127,52 @@ class QuizActivity : AppCompatActivity() {
         binding.tvQuestion.text = question.asking
 
         binding.edtAnswer.requestFocus()
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(binding.edtAnswer, InputMethodManager.SHOW_IMPLICIT)
+
+        binding.tvTimer.text = "${session.timeLeft}s"
+        binding.progressTimer.max = 60
+        binding.progressTimer.progress = session.timeLeft
+
+        if (session.isFinished) navigateToResult()
     }
 
     private fun navigateToResult() {
-        val session = viewModel.quizSessionState.value ?: return
-        val correctCount = session.result.count { it.isCorrect }
-        val totalCoins = session.score + (viewModel.timeLeftState.value * 2)
-
-        val detailItems = ArrayList(session.questions.mapIndexed { index, question ->
-            val result = session.result.find { it.questionId == question.id }
-            QuestionDetailItem(
-                questionNumber = index + 1,
-                questionText = question.asking,
-                correctAnswer = question.answers.firstOrNull() ?: "",
-                userAnswer = result?.userAnswer,
-                isCorrect = result?.isCorrect ?: false
-            )
-        })
-
-        val intent = Intent(this, ResultActivity::class.java).apply {
-            putExtra("EXTRA_CORRECT_COUNT", correctCount)
-            putExtra("EXTRA_TOTAL_QUESTIONS", session.questions.size)
-            putExtra("EXTRA_COINS_EARNED", totalCoins)
-            putExtra("EXTRA_CATEGORY_ID", session.categoryId)
-            putExtra("EXTRA_PACKAGE_NAME", intent.getStringExtra("EXTRA_PACKAGE_NAME") ?: "Tổng hợp")
-            putExtra("EXTRA_DETAIL_ITEMS", detailItems)
-        }
-        startActivity(intent)
-        finish()
+        findNavController().navigate(
+            R.id.action_registerFragment_to_homeFragment
+        )
+//        val session = viewModel.quizSessionState.value ?: return
+//        val correctCount = session.result.count { it.isCorrect }
+//        val totalCoins = session.score + (viewModel.timeLeftState.value * 2)
+//
+//        val detailItems = ArrayList(session.questions.mapIndexed { index, question ->
+//            val result = session.result.find { it.questionId == question.id }
+//            QuestionDetailItem(
+//                questionNumber = index + 1,
+//                questionText = question.asking,
+//                correctAnswer = question.answers.firstOrNull() ?: "",
+//                userAnswer = result?.userAnswer,
+//                isCorrect = result?.isCorrect ?: false
+//            )
+//        })
+//
+//        val intent = Intent(this, ResultActivity::class.java).apply {
+//            putExtra("EXTRA_CORRECT_COUNT", correctCount)
+//            putExtra("EXTRA_TOTAL_QUESTIONS", session.questions.size)
+//            putExtra("EXTRA_COINS_EARNED", totalCoins)
+//            putExtra("EXTRA_CATEGORY_ID", session.categoryId)
+//            putExtra("EXTRA_PACKAGE_NAME", intent.getStringExtra("EXTRA_PACKAGE_NAME") ?: "Tổng hợp")
+//            putExtra("EXTRA_DETAIL_ITEMS", detailItems)
+//        }
+//        startActivity(intent)
+//        finish()
     }
 
     private fun showExitConfirmationDialog() {
-        AlertDialog.Builder(this)
+        AlertDialog.Builder(requireContext())
             .setTitle("Thoát lượt chơi?")
             .setMessage("Tiến trình hiện tại sẽ bị hủy và không ghi nhận điểm số.")
-            .setPositiveButton("Thoát") { _, _ -> finish() }
+            .setPositiveButton("Thoát") { _, _ -> findNavController().popBackStack() }
             .setNegativeButton("Tiếp tục chơi", null)
             .show()
     }

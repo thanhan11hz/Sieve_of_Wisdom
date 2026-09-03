@@ -14,6 +14,7 @@ import com.example.sieve_of_wisdom.data.model.Package
 import com.example.sieve_of_wisdom.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.navigation.fragment.findNavController
+import android.util.Log
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -32,10 +33,21 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentHomeBinding.bind(view)
-
+        Log.d(
+            "HOME_DEBUG",
+            "btnGoToStore = ${binding.btnGoToStore}, " +
+                    "visible=${binding.btnGoToStore.visibility}, " +
+                    "enabled=${binding.btnGoToStore.isEnabled}, " +
+                    "clickable=${binding.btnGoToStore.isClickable}"
+        )
+        binding.btnGoToStore.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_homeFragment_to_storeFragment
+            )
+        }
+        
         setupRecyclerView()
         setupTopics()
-//        setupBottomNavigation()
         setupLogout()
         observeViewModel()  
     }
@@ -117,6 +129,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 Toast.LENGTH_SHORT
             ).show()
         }
+
+        viewModel.completedPackages.observe(viewLifecycleOwner) {
+            updateProgress()
+        }
+        
+        viewModel.totalPackages.observe(viewLifecycleOwner) {
+            updateProgress()
+        }
     }
 
     private fun setupTopics() {
@@ -171,6 +191,26 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             "Science" -> "Khoa học"
             else -> classification
         }
+    }
+
+    private fun updateProgress() {
+        val completed =
+            viewModel.completedPackages.value ?: 0
+
+        val total =
+            viewModel.totalPackages.value ?: 0
+
+        binding.tvProgressCount.text =
+            "$completed/$total"
+
+        binding.progressCurrent.max =
+            total.coerceAtLeast(1)
+
+        binding.progressCurrent.progress =
+            completed.coerceIn(
+                0,
+                total.coerceAtLeast(1)
+            )
     }
 //
 //    private fun setupBottomNavigation() {

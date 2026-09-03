@@ -39,17 +39,10 @@ class PackageAdapter(
 
         fun bind(pkg: Package) {
 
-            binding.tvPackageTitle.text =
-                pkg.name
-        
-            binding.tvPackageQuestions.text =
-                "▣   30 câu hỏi"
-        
-            binding.tvPackageTime.text =
-                "◷   60 giây"
-        
-            binding.btnPackageStart.text =
-                "Bắt đầu"
+            binding.tvPackageTitle.text =pkg.name
+            binding.tvPackageQuestions.text = "30 câu hỏi"
+            binding.tvPackageTime.text = "60 giây"
+            binding.btnPackageStart.text = "Bắt đầu"
         
             binding.btnPackageStart.setOnClickListener {
                 onPackageClick(pkg)
