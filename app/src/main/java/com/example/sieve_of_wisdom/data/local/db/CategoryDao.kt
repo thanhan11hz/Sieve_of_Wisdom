@@ -1,6 +1,8 @@
 package com.example.sieve_of_wisdom.data.local.db
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.example.sieve_of_wisdom.data.local.entity.CategoryEntity
@@ -10,6 +12,9 @@ import com.example.sieve_of_wisdom.data.local.relation.CategoryWithAccess
 interface CategoryDao {
     @Query("SELECT * FROM Category")
     suspend fun getAllCategory(): List<CategoryEntity>;
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCategories(categories: List<CategoryEntity>);
 
     @Transaction
     @Query("""

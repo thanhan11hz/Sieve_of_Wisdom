@@ -1,6 +1,7 @@
 package com.example.sieve_of_wisdom.data.remote.api
 
 import com.example.sieve_of_wisdom.data.remote.dto.AccessDto
+import com.example.sieve_of_wisdom.data.remote.dto.CategoryDto
 import com.example.sieve_of_wisdom.data.remote.dto.QuestionDto
 import com.example.sieve_of_wisdom.data.remote.dto.SyncAccessRequest
 import com.example.sieve_of_wisdom.data.remote.dto.SyncUserCoinRequest
@@ -23,4 +24,7 @@ interface SyncApiService {
 
     @GET("api/sync/questions")
     suspend fun getLatestQuestions(@Query("last_updated") lastUpdated: Long = 0L): Response<List<QuestionDto>>
+
+    @GET("api/sync/category")
+    suspend fun getCategory(@Query("last_updated") lastUpdated: Long = 0L): Response<List<CategoryDto>>
 }
