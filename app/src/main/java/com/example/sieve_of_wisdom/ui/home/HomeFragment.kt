@@ -13,7 +13,7 @@ import com.example.sieve_of_wisdom.R
 import com.example.sieve_of_wisdom.data.model.Package
 import com.example.sieve_of_wisdom.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
-
+import androidx.navigation.fragment.findNavController
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -36,7 +36,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         setupRecyclerView()
         setupTopics()
 //        setupBottomNavigation()
-        observeViewModel()
+        setupLogout()
+        observeViewModel()  
     }
 
     private fun setupRecyclerView() {
@@ -52,7 +53,25 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             setHasFixedSize(false)
         }
     }
+    private fun setupLogout() {
+        binding.btnLogout.setOnClickListener {
 
+            viewModel.logout(
+                onComplete = {
+                    findNavController().navigate(
+                        R.id.signInFragment,
+                        null,
+                        androidx.navigation.navOptions {
+                            popUpTo(R.id.registerFragment) {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
+                    )
+                }
+            )
+        }
+    }
     private fun observeViewModel() {
 
         viewModel.packages.observe(viewLifecycleOwner) { packages ->
@@ -75,6 +94,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 binding.emptyPackageContainer.visibility =
                     View.GONE
             }
+        }
+
+        viewModel.username.observe(viewLifecycleOwner) { username ->
+            binding.tvHomeGreeting.text = "Chào, $username"
         }
 
         viewModel.coin.observe(viewLifecycleOwner) { coin ->

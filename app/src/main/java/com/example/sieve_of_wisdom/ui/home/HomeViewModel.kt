@@ -5,13 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sieve_of_wisdom.data.model.Package
+import com.example.sieve_of_wisdom.data.repository.AuthRepository
 import com.example.sieve_of_wisdom.data.repository.PackageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val packageRepository: PackageRepository
+    private val packageRepository: PackageRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _packages =
@@ -52,18 +54,29 @@ class HomeViewModel @Inject constructor(
     val topics: LiveData<List<String>>
         get() = _topics
 
+    private val _username = MutableLiveData<String>("")
+    val username: LiveData<String>
+        get() = _username
     init {
         loadPackages()
         loadTopics()
         loadUser()
     }
 
+    fun logout(onComplete: () -> Unit) {
+        viewModelScope.launch {
+            authRepository.logout()
+            onComplete()
+        }
+    }
     private fun loadUser() {
         viewModelScope.launch {
             packageRepository
                 .getCurrentUser()
                 .onSuccess { user ->
                     _coin.value = user.coin
+                    _username.value = user.username
+
                 }
                 .onFailure {
                     _error.value =

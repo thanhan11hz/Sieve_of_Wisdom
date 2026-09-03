@@ -56,7 +56,7 @@
 
     <fragment
     android:id="@+id/storeFragment"
-    android:name="com.example.sieve_of_wisdom.ui.store.StoreFragment"
+    android:name="com.example.sieve_of_wisdom.ui.home.StoreFragment"
     android:label="Store"
     tools:layout="@layout/fragment_store" />
 
