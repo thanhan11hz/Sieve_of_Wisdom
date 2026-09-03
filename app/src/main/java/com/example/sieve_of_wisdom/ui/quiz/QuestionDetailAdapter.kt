@@ -1,42 +1,103 @@
+//package com.example.sieve_of_wisdom.ui.quiz
+//
+//import android.graphics.Color
+//import android.view.LayoutInflater
+//import android.view.ViewGroup
+//import androidx.recyclerview.widget.RecyclerView
+//import com.example.sieve_of_wisdom.databinding.ItemQuestionDetailBinding
+//
+//class QuestionDetailAdapter(
+//    private val items: List<QuestionDetailItem>
+//) : RecyclerView.Adapter<QuestionDetailAdapter.ViewHolder>() {
+//
+//    inner class ViewHolder(val binding: ItemQuestionDetailBinding) :
+//        RecyclerView.ViewHolder(binding.root)
+//
+//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+//        val binding = ItemQuestionDetailBinding.inflate(
+//            LayoutInflater.from(parent.context), parent, false
+//        )
+//        return ViewHolder(binding)
+//    }
+//
+//    override fun getItemCount(): Int = items.size
+//
+//    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+//        val item = items[position]
+//        with(holder.binding) {
+//            tvQuestionNumber.text = "Câu ${item.questionNumber}"
+//            tvQuestion.text = item.questionText
+//            tvCorrectAnswer.text = "Đáp án: ${item.correctAnswer}"
+//            tvUserAnswer.text = "Bạn trả lời: ${item.userAnswer ?: "Bỏ qua"}"
+//
+//            // Green (#4CAF50) for correct, Red (#E53935) for incorrect/skipped
+//            val backgroundColor = if (item.isCorrect) {
+//                Color.parseColor("#4CAF50")
+//            } else {
+//                Color.parseColor("#E53935")
+//            }
+//            questionItem.setBackgroundColor(backgroundColor)
+//        }
+//    }
+//}
+
 package com.example.sieve_of_wisdom.ui.quiz
 
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.sieve_of_wisdom.data.model.QuestionResult
 import com.example.sieve_of_wisdom.databinding.ItemQuestionDetailBinding
 
 class QuestionDetailAdapter(
-    private val items: List<QuestionDetailItem>
+    private var results: List<QuestionResult>
 ) : RecyclerView.Adapter<QuestionDetailAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val binding: ItemQuestionDetailBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(
+        val binding: ItemQuestionDetailBinding
+    ) : RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ViewHolder {
         val binding = ItemQuestionDetailBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
+
         return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = results.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = items[position]
+    override fun onBindViewHolder(
+        holder: ViewHolder,
+        position: Int
+    ) {
+        val result = results[position]
+
         with(holder.binding) {
-            tvQuestionNumber.text = "Câu ${item.questionNumber}"
-            tvQuestion.text = item.questionText
-            tvCorrectAnswer.text = "Đáp án: ${item.correctAnswer}"
-            tvUserAnswer.text = "Bạn trả lời: ${item.userAnswer ?: "Bỏ qua"}"
+            tvQuestionNumber.text = "Câu ${position + 1}"
+            tvQuestion.text = result.asking
+            tvCorrectAnswer.text = "Đáp án: ${result.correctAnswer}"
+            tvUserAnswer.text =
+                "Bạn trả lời: ${result.userAnswer ?: "Bỏ qua"}"
 
-            // Green (#4CAF50) for correct, Red (#E53935) for incorrect/skipped
-            val backgroundColor = if (item.isCorrect) {
+            val backgroundColor = if (result.isCorrect) {
                 Color.parseColor("#4CAF50")
             } else {
                 Color.parseColor("#E53935")
             }
+
             questionItem.setBackgroundColor(backgroundColor)
         }
+    }
+
+    fun updateData(results: List<QuestionResult>) {
+        this.results = results
+        notifyDataSetChanged()
     }
 }

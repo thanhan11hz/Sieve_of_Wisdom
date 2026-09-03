@@ -14,7 +14,7 @@
         android:label="Register"
         tools:layout="@layout/fragment_register">
 
-        <!-- REGISTER ot LOGIN -->
+        <!-- REGISTER to LOGIN -->
         <action
             android:id="@+id/action_registerFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
@@ -60,6 +60,52 @@
     android:label="Store"
     tools:layout="@layout/fragment_store" />
 
+    <!-- QUIZ FLOW -->
+    <navigation
+        android:id="@+id/quiz_graph"
+        app:startDestination="@id/quizFragment">
+
+        <!-- QUIZ -->
+        <fragment
+            android:id="@+id/quizFragment"
+            android:name="com.example.sieve_of_wisdom.ui.quiz.QuizFragment"
+            android:label="Quiz"
+            tools:layout="@layout/fragment_quiz">
+
+            <!-- QUIZ → RESULT -->
+            <action
+                android:id="@+id/action_quizFragment_to_resultFragment"
+                app:destination="@id/resultFragment" />
+
+        </fragment>
+
+        <!-- RESULT -->
+        <fragment
+            android:id="@+id/resultFragment"
+            android:name="com.example.sieve_of_wisdom.ui.quiz.ResultFragment"
+            android:label="Result"
+            tools:layout="@layout/fragment_result">
+
+            <!-- RESULT → DETAIL -->
+            <action
+                android:id="@+id/action_resultFragment_to_detailFragment"
+                app:destination="@id/detailFragment" />
+
+            <!-- RESULT → QUIZ -->
+            <action
+                android:id="@+id/action_resultFragment_to_quizFragment"
+                app:destination="@id/quizFragment" />
+
+        </fragment>
+
+        <!-- DETAIL -->
+        <fragment
+            android:id="@+id/detailFragment"
+            android:name="com.example.sieve_of_wisdom.ui.quiz.DetailFragment"
+            android:label="Detail"
+            tools:layout="@layout/fragment_detail" />
+
+    </navigation>
 
     <fragment
     android:id="@+id/pvpFragment"
