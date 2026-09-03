@@ -117,6 +117,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 Toast.LENGTH_SHORT
             ).show()
         }
+
+        viewModel.completedPackages.observe(viewLifecycleOwner) {
+            updateProgress()
+        }
+        
+        viewModel.totalPackages.observe(viewLifecycleOwner) {
+            updateProgress()
+        }
     }
 
     private fun setupTopics() {
@@ -171,6 +179,26 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             "Science" -> "Khoa học"
             else -> classification
         }
+    }
+
+    private fun updateProgress() {
+        val completed =
+            viewModel.completedPackages.value ?: 0
+
+        val total =
+            viewModel.totalPackages.value ?: 0
+
+        binding.tvProgressCount.text =
+            "$completed/$total"
+
+        binding.progressCurrent.max =
+            total.coerceAtLeast(1)
+
+        binding.progressCurrent.progress =
+            completed.coerceIn(
+                0,
+                total.coerceAtLeast(1)
+            )
     }
 //
 //    private fun setupBottomNavigation() {

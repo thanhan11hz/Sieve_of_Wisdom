@@ -185,8 +185,6 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="12dp"
-            android:max="37"
-            android:progress="7"
             android:progressDrawable="@drawable/bg_home_progress" />
 
     </FrameLayout>

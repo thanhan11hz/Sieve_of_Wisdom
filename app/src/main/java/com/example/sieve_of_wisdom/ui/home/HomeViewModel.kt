@@ -7,17 +7,26 @@ import androidx.lifecycle.viewModelScope
 import com.example.sieve_of_wisdom.data.model.Package
 import com.example.sieve_of_wisdom.data.repository.AuthRepository
 import com.example.sieve_of_wisdom.data.repository.PackageRepository
+import com.example.sieve_of_wisdom.data.util.QuizProgressManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val packageRepository: PackageRepository,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val quizProgressManager: QuizProgressManager
 ) : ViewModel() {
 
+    private val _totalPackages = MutableLiveData(0)
+    val totalPackages: LiveData<Int>
+        get() = _totalPackages
     private val _packages =
         MutableLiveData<List<Package>>(emptyList())
+
+    private val _completedPackages = MutableLiveData(0)
+    val completedPackages: LiveData<Int>
+        get() = _completedPackages
 
     val packages: LiveData<List<Package>>
         get() = _packages
@@ -61,6 +70,7 @@ class HomeViewModel @Inject constructor(
         loadPackages()
         loadTopics()
         loadUser()
+        
     }
 
     fun logout(onComplete: () -> Unit) {
@@ -97,8 +107,9 @@ class HomeViewModel @Inject constructor(
                 .onSuccess {
 
                     allPackages = it
-
+                    _totalPackages.value = it.size
                     applyFilters()
+                    loadProgress()
                 }
                 .onFailure {
 
@@ -110,6 +121,27 @@ class HomeViewModel @Inject constructor(
             _isLoading.value = false
         }
     }
+    private fun loadProgress() {
+        viewModelScope.launch {
+    
+            packageRepository
+                .getCurrentUser()
+                .onSuccess { user ->
+    
+                    val completed =
+                        quizProgressManager
+                            .getCompletedCategories(user.id)
+    
+                    _completedPackages.value =
+                        completed.count { categoryId ->
+                            allPackages.any {
+                                it.categoryId == categoryId
+                            }
+                        }
+                }
+        }
+    }
+
 
 //    fun loadPackages() {
 //        viewModelScope.launch {
