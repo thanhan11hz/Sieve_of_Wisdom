@@ -19,7 +19,6 @@ class UpdateManager @Inject constructor(
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 
-    // --- BỔ SUNG: Quản lý last_updated ---
     fun saveLastUpdatedTime(timestamp: Long = System.currentTimeMillis()) {
         prefs.edit().putLong("last_updated", timestamp).apply()
     }

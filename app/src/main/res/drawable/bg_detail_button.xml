@@ -19,7 +19,7 @@
 
             <corners android:radius="30dp"/>
 
-            <solid android:color="#FFF8EE"/>
+            <solid android:color="#E6C95F"/>
 
             <stroke
                 android:width="4dp"

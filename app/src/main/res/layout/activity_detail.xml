@@ -9,24 +9,18 @@
 
     <!-- ================= BACK BUTTON ================= -->
 
-    <TextView
+    <ImageButton
         android:id="@+id/btnBack"
-        android:layout_width="55dp"
+        android:layout_width="52dp"
         android:layout_height="55dp"
         android:layout_marginStart="3dp"
         android:layout_marginTop="2dp"
-        android:gravity="center"
-        android:text="‹"
-        android:textColor="#FFFFFF"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        android:fontFamily="sans-serif"
-        android:shadowColor="#000000"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        android:shadowRadius="1"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_back_arrow"
+        android:scaleType="center"
+        android:padding="3dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <!-- ================= TITLE ================= -->
@@ -35,7 +29,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="320dp"
         android:layout_height="82dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/bg_detail_title"
         android:gravity="center"
         android:text="Chi tiết"

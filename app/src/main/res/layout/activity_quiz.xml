@@ -18,23 +18,18 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <!-- Back button -->
-        <TextView
+        <ImageButton
             android:id="@+id/btnBack"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:includeFontPadding="false"
-            android:text="‹"
-            android:textColor="#FFFFFF"
-            android:textSize="48sp"
-            android:textStyle="bold"
-            app:fontFamily="@font/itim"
-            android:shadowColor="#000000"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="1"
+            android:layout_marginStart="5dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_back_arrow"
+            android:scaleType="center"
+            android:padding="0dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBaseline_toBaselineOf="@id/tvQuestionNumber"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <!-- Question counter -->
         <TextView

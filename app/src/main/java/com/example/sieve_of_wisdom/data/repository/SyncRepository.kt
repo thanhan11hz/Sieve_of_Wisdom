@@ -12,6 +12,7 @@ import com.example.sieve_of_wisdom.data.remote.api.SyncApiService
 import com.example.sieve_of_wisdom.data.remote.dto.SyncAccessRequest
 import com.example.sieve_of_wisdom.data.remote.dto.SyncUserCoinRequest
 import com.example.sieve_of_wisdom.data.mapper.toCategoryEntity
+import com.example.sieve_of_wisdom.util.UpdateManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -24,8 +25,9 @@ class SyncRepository @Inject constructor(
     private val userDao: UserDao,
     private val accessDao: AccessDao,
     private val questionDao: QuestionDao,
+    private val categoryDao: CategoryDao,
     private val answerDao: AnswerDao,
-    private val categoryDao: CategoryDao
+    private val updateManager: UpdateManager
 ) {
 
     suspend fun syncAllData(): Result<Unit> = withContext(Dispatchers.IO) {
@@ -49,6 +51,19 @@ class SyncRepository @Inject constructor(
                 SyncUserCoinRequest(userId = user.id, coin = user.coin)
             )
 
+            val lastUpdated = updateManager.getLastUpdatedTime()
+            val remoteCategoryResponse = syncApiService.getCategory(lastUpdated)
+            if (remoteCategoryResponse.isSuccessful) {
+                remoteCategoryResponse.body()?.let { remoteList ->
+                    if (remoteList.isNotEmpty()) {
+                        val entities = remoteList.map { it.toEntity() }
+                        categoryDao.insertCategories(entities)
+                        val safeSyncTime = System.currentTimeMillis() - 5000
+                        updateManager.saveLastUpdatedTime(safeSyncTime)
+                    }
+                }
+            }
+
             val remoteAccessResponse = syncApiService.getUserAccess(user.id)
             if (remoteAccessResponse.isSuccessful) {
                 remoteAccessResponse.body()?.let { remoteList ->
@@ -56,8 +71,7 @@ class SyncRepository @Inject constructor(
                     accessDao.insertAccesses(entities)
                 }
             }
-
-            val latestQuestionsResponse = syncApiService.getLatestQuestions()
+            val latestQuestionsResponse = syncApiService.getLatestQuestions(lastUpdated)
             if (latestQuestionsResponse.isSuccessful) {
                 latestQuestionsResponse.body()?.let { questionDtoList ->
                     val questionEntities = questionDtoList.map { it.toQuestionEntity() }
@@ -65,6 +79,8 @@ class SyncRepository @Inject constructor(
 
                     questionDao.insertQuestions(questionEntities)
                     answerDao.insertAnswers(answerEntities)
+                    val safeSyncTime = System.currentTimeMillis() - 5000
+                    updateManager.saveLastUpdatedTime(safeSyncTime)
                 }
             }
 

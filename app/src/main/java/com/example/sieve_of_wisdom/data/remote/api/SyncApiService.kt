@@ -25,6 +25,6 @@ interface SyncApiService {
     @GET("api/sync/questions")
     suspend fun getLatestQuestions(@Query("last_updated") lastUpdated: Long = 0L): Response<List<QuestionDto>>
 
-    @GET("api/sync/categories")
-    suspend fun getCategories(): Response<List<CategoryDto>>
-}   
+    @GET("api/sync/category")
+    suspend fun getCategory(@Query("last_updated") lastUpdated: Long = 0L): Response<List<CategoryDto>>
+}
