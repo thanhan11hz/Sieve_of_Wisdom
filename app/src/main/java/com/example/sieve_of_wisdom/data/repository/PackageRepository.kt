@@ -34,7 +34,7 @@ class PackageRepository @Inject constructor(
                 Log.d("HOME_DEBUG", "Current userId = $userId")
 
                 val categoryWithAccess =
-                    categoryDao.getCategoryWithAccess(userId)
+                    categoryDao.getCategoryWithAccess()
 
                 Log.d(
                     "HOME_DEBUG",
@@ -64,11 +64,11 @@ class PackageRepository @Inject constructor(
 
                 if (isUnlock) {
                     categoryDao
-                        .getUnlockedCategory(userId)
+                        .getUnlockedCategory()
                         .map { it.toModel() }
                 } else {
                     categoryDao
-                        .getLockedCategory(userId)
+                        .getLockedCategory()
                         .map { it.toModel() }
                 }
             }
@@ -83,7 +83,7 @@ class PackageRepository @Inject constructor(
                 val userId = getCurrentUserId()
 
                 categoryDao
-                    .getCategoryBySearch(userId, query)
+                    .getCategoryBySearch(query)
                     .map { it.toModel() }
             }
         }
@@ -98,7 +98,6 @@ class PackageRepository @Inject constructor(
 
                 categoryDao
                     .getCategoryByClassification(
-                        userId,
                         classification
                     )
                     .map { it.toModel() }
@@ -133,7 +132,6 @@ class PackageRepository @Inject constructor(
                 val newCoin = user.coin - pkg.price
 
                 userDao.updateCoin(
-                    userId = user.id,
                     coin = newCoin
                 )
 

@@ -97,6 +97,7 @@ dependencies {
     // WorkManager + Hilt Work (Đã loại bỏ ksp trùng lặp)
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.hilt.work)
+    ksp(libs.androidx.hilt.compiler)
 
     // Security
     implementation(libs.androidx.security.crypto)
