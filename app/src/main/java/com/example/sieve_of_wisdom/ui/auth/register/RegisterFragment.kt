@@ -96,13 +96,13 @@ class RegisterFragment : Fragment() {
                 requireActivity().runOnUiThread {
 
                     binding.btnRegister.isEnabled = true
-
+                    hideKeyboard()
                     if (result.isSuccess) {
 
                         val profile =
                             result.getOrNull()
 
-                        hideKeyboard()
+                        
 
                         Toast.makeText(
                             requireContext(),
@@ -144,6 +144,13 @@ class RegisterFragment : Fragment() {
             }
         }
 
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+
+            binding.loadingOverlay.visibility =
+                if (isLoading) View.VISIBLE else View.GONE
+
+            binding.btnRegister.isEnabled = !isLoading
+        }
         binding.tvLoginRedirect.setOnClickListener {
             navigateToLogin()
         }

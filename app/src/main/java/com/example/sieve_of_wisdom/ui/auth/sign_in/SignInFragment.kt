@@ -76,6 +76,7 @@ class SignInFragment : Fragment() {
 
             binding.btnLogin.isEnabled = false
 
+
             viewModel.login(
                 username = username,
                 password = password
@@ -84,7 +85,7 @@ class SignInFragment : Fragment() {
                 requireActivity().runOnUiThread {
 
                     binding.btnLogin.isEnabled = true
-
+                    hideKeyboard()
                     if (result.isSuccess) {
 
                         val profile =
@@ -95,7 +96,7 @@ class SignInFragment : Fragment() {
                             "Login success: $profile"
                         )
 
-                        hideKeyboard()
+                       
 
                         Toast.makeText(
                             requireContext(),
@@ -140,6 +141,13 @@ class SignInFragment : Fragment() {
             }
         }
 
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+
+            binding.loadingOverlay.visibility =
+                if (isLoading) View.VISIBLE else View.GONE
+
+            binding.btnLogin.isEnabled = !isLoading
+        }
         binding.tvRegisterRedirect.setOnClickListener {
             navigateToRegister()
         }
