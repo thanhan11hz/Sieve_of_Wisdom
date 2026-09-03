@@ -32,8 +32,7 @@ class PackageRepository @Inject constructor(
 
             Log.d("HOME_DEBUG", "Current userId = $userId")
 
-            val categoryWithAccess =
-                categoryDao.getCategoryWithAccess(userId)
+            val categoryWithAccess = categoryDao.getCategoryWithAccess(userId)
 
             Log.d(
                 "HOME_DEBUG",

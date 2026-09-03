@@ -381,6 +381,35 @@
 
             tools:listitem="@layout/item_quiz_package" />
 
+        <LinearLayout
+            android:id="@+id/empty_package_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_empty_package"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:fontFamily="@font/itim"
+                android:text="Vui lòng vào cửa hàng để mua gói"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_go_to_store"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Đến cửa hàng" />
+
+        </LinearLayout>
+
     </com.example.sieve_of_wisdom.ui.neo.NeoFrameLayout>
 
     <com.example.sieve_of_wisdom.ui.neo.NeoFrameLayout

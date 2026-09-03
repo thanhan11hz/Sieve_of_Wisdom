@@ -72,62 +72,62 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-//
-//    fun loadPackages() {
-//        viewModelScope.launch {
-//
-//            _isLoading.value = true
-//            _error.value = null
-//
-//            packageRepository
-//                .getPackage()
-//                .onSuccess {
-//
-//                    allPackages = it
-//
-//                    applyFilters()
-//                }
-//                .onFailure {
-//
-//                    _error.value =
-//                        it.message
-//                            ?: "Không thể tải danh sách gói câu hỏi."
-//                }
-//
-//            _isLoading.value = false
-//        }
-//    }
 
     fun loadPackages() {
         viewModelScope.launch {
-            val hardcodedPackages = listOf(
-                Package(
-                    categoryId  = 1,
-                    name = "General Knowledge",
-                    classification = "Common",
-                    price = 100,
-                    isUnlocked = false
-                ),
-                Package(
-                    categoryId  = 2,
-                    name = "Social Science",
-                    classification = "Social",
-                    price = 200,
-                    isUnlocked = true
-                ),
-                Package(
-                    categoryId  = 3,
-                    name = "Science Challenge",
-                    classification = "Science",
-                    price = 300,
-                    isUnlocked = false
-                )
-            )
 
-            allPackages = hardcodedPackages
-            applyFilters()
+            _isLoading.value = true
+            _error.value = null
+
+            packageRepository
+                .getPackage()
+                .onSuccess {
+
+                    allPackages = it
+
+                    applyFilters()
+                }
+                .onFailure {
+
+                    _error.value =
+                        it.message
+                            ?: "Không thể tải danh sách gói câu hỏi."
+                }
+
+            _isLoading.value = false
         }
     }
+
+//    fun loadPackages() {
+//        viewModelScope.launch {
+//            val hardcodedPackages = listOf(
+//                Package(
+//                    categoryId  = 1,
+//                    name = "General Knowledge",
+//                    classification = "Common",
+//                    price = 100,
+//                    isUnlocked = false
+//                ),
+//                Package(
+//                    categoryId  = 2,
+//                    name = "Social Science",
+//                    classification = "Social",
+//                    price = 200,
+//                    isUnlocked = true
+//                ),
+//                Package(
+//                    categoryId  = 3,
+//                    name = "Science Challenge",
+//                    classification = "Science",
+//                    price = 300,
+//                    isUnlocked = false
+//                )
+//            )
+//
+//            allPackages = hardcodedPackages
+//            applyFilters()
+//        }
+//    }
 
     private fun loadTopics() {
         viewModelScope.launch {
@@ -170,29 +170,29 @@ class HomeViewModel @Inject constructor(
     private fun applyFilters() {
 
         var result = allPackages
-
-        selectedTopic?.let { topic ->
-
+    
+        selectedTopic?.let { classification ->
+    
             result = result.filter {
-
+    
                 it.classification.equals(
-                    topic,
+                    classification,
                     ignoreCase = true
                 )
             }
         }
-
+    
         if (currentQuery.isNotBlank()) {
-
+    
             result = result.filter {
-
-                it.classification.contains(
+    
+                it.name.contains(
                     currentQuery,
                     ignoreCase = true
                 )
             }
         }
-
+    
         _packages.value = result
     }
 

@@ -39,27 +39,22 @@ class PackageAdapter(
 
         fun bind(pkg: Package) {
 
-            binding.tvPackageTitle.text = pkg.classification
-
-            /*
-             * SRS quy định mỗi lượt chơi tối đa 30 câu.
-             * Package model hiện chưa có questionCount.
-             */
-            binding.tvPackageQuestions.text = "▣   30 câu hỏi"
-
-            binding.tvPackageTime.text = "◷   60 giây"
-
-            if (pkg.isUnlocked) {
-                binding.btnPackageStart.text = "Bắt đầu"
-            } else {
-                binding.btnPackageStart.text =
-                    "Mở khóa ${pkg.price} Xu"
-            }
-
+            binding.tvPackageTitle.text =
+                pkg.name
+        
+            binding.tvPackageQuestions.text =
+                "▣   30 câu hỏi"
+        
+            binding.tvPackageTime.text =
+                "◷   60 giây"
+        
+            binding.btnPackageStart.text =
+                "Bắt đầu"
+        
             binding.btnPackageStart.setOnClickListener {
                 onPackageClick(pkg)
             }
-
+        
             binding.quizPackageCard.setOnClickListener {
                 onPackageClick(pkg)
             }

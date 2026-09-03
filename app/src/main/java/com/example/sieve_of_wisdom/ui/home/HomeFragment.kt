@@ -56,7 +56,25 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun observeViewModel() {
 
         viewModel.packages.observe(viewLifecycleOwner) { packages ->
+
             packageAdapter.submitList(packages)
+        
+            if (packages.isEmpty()) {
+        
+                binding.rvQuizPackages.visibility =
+                    View.GONE
+        
+                binding.emptyPackageContainer.visibility =
+                    View.VISIBLE
+        
+            } else {
+        
+                binding.rvQuizPackages.visibility =
+                    View.VISIBLE
+        
+                binding.emptyPackageContainer.visibility =
+                    View.GONE
+            }
         }
 
         viewModel.coin.observe(viewLifecycleOwner) { coin ->
@@ -84,9 +102,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     
             binding.topicContainer.removeAllViews()
     
-            val allTopics = listOf("Tất cả") + topics
+            val allTopics =
+                listOf<String?>(null) + topics
     
-            allTopics.forEach { topic ->
+            allTopics.forEach { classification ->
     
                 val topicView =
                     LayoutInflater.from(requireContext())
@@ -101,18 +120,33 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         R.id.tv_topic_name
                     )
     
-                topicName.text = topic
+                topicName.text =
+                    if (classification == null) {
+                        "Tất cả"
+                    } else {
+                        classificationToVietnamese(
+                            classification
+                        )
+                    }
     
                 topicName.setOnClickListener {
     
                     viewModel.filterByTopic(
-                        if (topic == "Tất cả") null
-                        else topic
+                        classification
                     )
                 }
     
                 binding.topicContainer.addView(topicView)
             }
+        }
+    }
+
+    private fun classificationToVietnamese(classification: String): String {
+        return when (classification) {
+            "Common" -> "Phổ thông"
+            "Social" -> "Xã hội"
+            "Science" -> "Khoa học"
+            else -> classification
         }
     }
 
@@ -132,6 +166,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             // TODO:
             // navigate tới StoreFragment
         }
+        binding.btnGoToStore.setOnClickListener {
+            // TODO navigate StoreFragment
+        }
 
         binding.btnNavPvp.setOnClickListener {
             Toast.makeText(
@@ -146,30 +183,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun handlePackageClick(pkg: Package) {
+        viewModel.selectPackage(pkg)
 
-        if (pkg.isUnlocked) {
+        Toast.makeText(
+            requireContext(),
+            "Bắt đầu: ${pkg.name}",
+            Toast.LENGTH_SHORT
+        ).show()
 
-            viewModel.selectPackage(pkg)
-
-            /*
-             * TODO:
-             * Navigate tới QuizActivity/QuizFragment.
-             * findNavController().navigate(
-             *     HomeFragmentDirections
-             *         .actionHomeFragmentToQuizFragment(pkg.categoryId)
-             * )
-             */
-
-            Toast.makeText(
-                requireContext(),
-                "Bắt đầu: ${pkg.classification}",
-                Toast.LENGTH_SHORT
-            ).show()
-
-        } else {
-
-            showUnlockDialog(pkg)
-        }
+        // TODO:
+        // Navigate tới QuizActivity với categoryId
     }
 
     private fun showUnlockDialog(pkg: Package) {
