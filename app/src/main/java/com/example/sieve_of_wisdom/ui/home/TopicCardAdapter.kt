@@ -29,7 +29,7 @@ class TopicCardAdapter(
             binding.tvTitle.text = item.name
             binding.tvStars.text = item.price.toString()
             binding.tvQuestions.text = "${item.quantity} câu hỏi"
-            binding.tvDuration.text = "${item.quantity * 3} giây"
+            // binding.tvDuration.text = "${item.quantity * 3} giây"
 
             if (item.isUnlocked) {
                 binding.btnUnlock.visibility = View.INVISIBLE

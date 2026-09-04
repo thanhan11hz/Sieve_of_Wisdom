@@ -5,36 +5,80 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/dialog_background"
-    android:padding="24dp">
+    android:padding="24dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp">
 
     <!-- Primary Message Header -->
-    <TextView
+<!--    <TextView-->
+<!--        android:id="@+id/tvMessage"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center"-->
+<!--        android:text="Dùng 10 xu để mở khóa gói này?"-->
+<!--        android:textColor="#000000"-->
+<!--        android:textSize="18sp"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <com.example.sieve_of_wisdom.ui.neo.NeoTextView
         android:id="@+id/tvMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="left"
-        android:text="Bạn có muốn dùng 10 xu để\nmở khóa gói"
-        android:textColor="#000000"
+        android:gravity="center"
+        android:text="Dùng 10 xu để mở khóa gói này?"
+        android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:fontFamily="@font/itim"
+        android:background="@android:color/transparent"
+        app:neoShadowColor="@color/primary_yellow"
+        app:neoShadowX="1dp"
+        app:neoShadowY="2dp"
+        app:neoStrokeColor="@color/black"
+        app:neoStrokeWidth="0dp"
+        android:includeFontPadding="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <!-- Sub-title Text -->
-    <TextView
+    <com.example.sieve_of_wisdom.ui.neo.NeoTextView
         android:id="@+id/tvPackageTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="Lịch sử Ấn Độ"
-        android:textColor="#000000"
+        android:textColor="@color/white"
         android:textSize="22sp"
         android:textStyle="bold"
+        android:fontFamily="@font/roboto"
+        android:background="@android:color/transparent"
+        app:neoShadowColor="@color/primary_yellow"
+        app:neoShadowX="6dp"
+        app:neoShadowY="4dp"
+        app:neoStrokeColor="@color/black"
+        app:neoStrokeWidth="5dp"
+        android:includeFontPadding="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvMessage" />
+
+<!--    <TextView-->
+<!--        android:id="@+id/tvPackageTitle"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:gravity="center"-->
+<!--        android:text="Lịch sử Ấn Độ"-->
+<!--        android:textColor="#000000"-->
+<!--        android:textSize="22sp"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/tvMessage" />-->
+
 
     <!-- Cancel Button -->
     <androidx.appcompat.widget.AppCompatButton

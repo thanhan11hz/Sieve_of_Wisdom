@@ -10,7 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.sieve_of_wisdom.R
-
+import com.example.sieve_of_wisdom.ui.neo.NeoTextView
 class PurchaseDialog : DialogFragment() {
 
     override fun onCreateView(
@@ -43,15 +43,15 @@ class PurchaseDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val messageText = view.findViewById<TextView>(R.id.tvMessage)
-        val packageTitleText = view.findViewById<TextView>(R.id.tvPackageTitle)
+        val messageText = view.findViewById<NeoTextView>(R.id.tvMessage)
+        val packageTitleText = view.findViewById<NeoTextView>(R.id.tvPackageTitle)
 
         val btnCancel = view.findViewById<Button>(R.id.btnCancel)
         val btnConfirm = view.findViewById<Button>(R.id.btnConfirm)
 
         // Get data passed to the Dialog
-        messageText.text = arguments?.getString(ARG_MESSAGE)
-        packageTitleText.text = arguments?.getString(ARG_PACKAGE_TITLE)
+        messageText.setText(arguments?.getString(ARG_MESSAGE))
+        packageTitleText.setText(arguments?.getString(ARG_PACKAGE_TITLE))
 
         btnCancel.setOnClickListener {
             dismiss()

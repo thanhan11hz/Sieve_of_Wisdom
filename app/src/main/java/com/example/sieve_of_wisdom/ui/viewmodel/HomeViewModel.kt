@@ -1,4 +1,4 @@
-package com.example.sieve_of_wisdom.ui.home
+package com.example.sieve_of_wisdom.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,15 +7,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.sieve_of_wisdom.data.model.Package
 import com.example.sieve_of_wisdom.data.repository.AuthRepository
 import com.example.sieve_of_wisdom.data.repository.PackageRepository
-import com.example.sieve_of_wisdom.data.util.QuizProgressManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val packageRepository: PackageRepository,
-    private val authRepository: AuthRepository,
-    private val quizProgressManager: QuizProgressManager
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
 
@@ -72,7 +71,7 @@ class HomeViewModel @Inject constructor(
         loadPackages()
         loadTopics()
         loadUser()
-        
+
     }
 
     fun logout(onComplete: () -> Unit) {
@@ -139,9 +138,9 @@ class HomeViewModel @Inject constructor(
 
                     allPackages = hardcodedPackages + remotePackages
                     _totalPackages.value = allPackages.size
+                    _completedPackages.value = allPackages.count { it.isUnlocked }
 
                     applyFilters()
-                    loadProgress()
                 }
                 .onFailure {
                     _error.value = it.message ?: "Không thể tải danh sách gói câu hỏi."
@@ -151,26 +150,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun loadProgress() {
-        viewModelScope.launch {
-    
-            packageRepository
-                .getCurrentUser()
-                .onSuccess { user ->
-    
-                    val completed =
-                        quizProgressManager
-                            .getCompletedCategories(user.id)
-    
-                    _completedPackages.value =
-                        completed.count { categoryId ->
-                            allPackages.any {
-                                it.categoryId == categoryId
-                            }
-                        }
-                }
-        }
-    }
 
 
 //    fun loadPackages() {
@@ -262,14 +241,14 @@ class HomeViewModel @Inject constructor(
 
     fun unlockPackage(pkg: Package) {
         viewModelScope.launch {
-    
+
             _isLoading.value = true
             _error.value = null
-    
+
             packageRepository
                 .unlockPackage(pkg)
                 .onSuccess { newCoin ->
-    
+
                     allPackages = allPackages.map {
                         if (it.categoryId == pkg.categoryId) {
                             it.copy(isUnlocked = true)
@@ -277,7 +256,7 @@ class HomeViewModel @Inject constructor(
                             it
                         }
                     }
-    
+                    _completedPackages.value = allPackages.count { it.isUnlocked }
                     applyFilters()
                     _coin.value = newCoin
                 }
@@ -286,11 +265,11 @@ class HomeViewModel @Inject constructor(
                         it.message
                             ?: "Không thể mở khóa gói câu hỏi."
                 }
-    
+
             _isLoading.value = false
         }
     }
-    
+
 //    val topics: LiveData<List<String>>
 //    get() = Transformations.map(packages) { packages ->
 //        listOf("Tất cả") +

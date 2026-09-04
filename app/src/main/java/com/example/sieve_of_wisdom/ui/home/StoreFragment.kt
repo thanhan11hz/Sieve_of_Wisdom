@@ -115,7 +115,7 @@ class StoreFragment : Fragment() {
             onUnlockClick = {
                 item -> pendingPackage = item
                 PurchaseDialog.newInstance(
-                    message = "Bạn có muốn dùng ${item.price} xu để\nmở khóa gói",
+                    message = "Dùng ${item.price} xu để mở khóa gói này?",
                     packageTitle = item.name
                 ).show(parentFragmentManager, "PurchaseDialog")
             }

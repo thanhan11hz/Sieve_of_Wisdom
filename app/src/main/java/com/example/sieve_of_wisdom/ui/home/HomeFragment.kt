@@ -3,7 +3,6 @@ package com.example.sieve_of_wisdom.ui.home
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -16,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import androidx.navigation.fragment.findNavController
 import android.util.Log
 import com.example.sieve_of_wisdom.ui.viewmodel.AuthViewModel
+import com.example.sieve_of_wisdom.ui.viewmodel.HomeViewModel
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
