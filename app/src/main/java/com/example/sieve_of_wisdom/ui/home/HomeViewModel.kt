@@ -18,6 +18,8 @@ class HomeViewModel @Inject constructor(
     private val quizProgressManager: QuizProgressManager
 ) : ViewModel() {
 
+
+
     private val _totalPackages = MutableLiveData(0)
     val totalPackages: LiveData<Int>
         get() = _totalPackages
@@ -75,7 +77,11 @@ class HomeViewModel @Inject constructor(
 
     fun logout(onComplete: () -> Unit) {
         viewModelScope.launch {
+            _isLoading.value = true
+
             authRepository.logout()
+            _isLoading.value = false
+
             onComplete()
         }
     }

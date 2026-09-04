@@ -15,10 +15,13 @@ import com.example.sieve_of_wisdom.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.navigation.fragment.findNavController
 import android.util.Log
+import com.example.sieve_of_wisdom.ui.viewmodel.AuthViewModel
+
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private val viewModel: HomeViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels()
 
     private var _binding: FragmentHomeBinding? = null
     private val binding
@@ -82,6 +85,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     )
                 }
             )
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+
+            binding.logoutLoadingOverlay.visibility =
+                if (isLoading) View.VISIBLE else View.GONE
+
+            binding.btnLogout.isEnabled = !isLoading
         }
     }
     private fun observeViewModel() {

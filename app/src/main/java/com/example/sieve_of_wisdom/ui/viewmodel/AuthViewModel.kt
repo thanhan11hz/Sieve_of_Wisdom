@@ -55,9 +55,9 @@ class AuthViewModel @Inject constructor(
 
     fun logout(context: Context, onComplete: () -> Unit) {
         viewModelScope.launch {
-
+            _isLoading.value = true
             val result = authRepository.logout()
-
+            _isLoading.value = false
             if (result.isSuccess) {
                 // Neu dong bo thanh cong thi chuyen ve man hinh login
             } else {
