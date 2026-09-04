@@ -104,29 +104,36 @@ class HomeViewModel @Inject constructor(
 
     fun loadPackages() {
         viewModelScope.launch {
-
             _isLoading.value = true
             _error.value = null
 
             packageRepository
                 .getPackage()
-                .onSuccess {
+                .onSuccess { remotePackages ->
+                    val tongHopPackage = Package(
+                        categoryId = 0, // 0 represents all categories combined
+                        name = "Tổng hợp",
+                        classification = "Common",
+                        price = 0,
+                        isUnlocked = true,
+                        quantity = 30
+                    )
 
-                    allPackages = it
-                    _totalPackages.value = it.size
+                    // Place "Tổng hợp" at the top of the package list
+                    allPackages = listOf(tongHopPackage) + remotePackages
+                    _totalPackages.value = allPackages.size
+
                     applyFilters()
                     loadProgress()
                 }
                 .onFailure {
-
-                    _error.value =
-                        it.message
-                            ?: "Không thể tải danh sách gói câu hỏi."
+                    _error.value = it.message ?: "Không thể tải danh sách gói câu hỏi."
                 }
 
             _isLoading.value = false
         }
     }
+
     private fun loadProgress() {
         viewModelScope.launch {
     
@@ -219,33 +226,21 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun applyFilters() {
+        var result = allPackages.filter { pkg -> pkg.isUnlocked }
 
-        var result = allPackages.filter { pkg ->
-            pkg.isUnlocked
-        }
-    
+        // Keep "Tổng hợp" (categoryId == 0) visible or filter by topic
         selectedTopic?.let { classification ->
-    
-            result = result.filter {
-    
-                it.classification.equals(
-                    classification,
-                    ignoreCase = true
-                )
+            result = result.filter { pkg ->
+                pkg.categoryId == 0 || pkg.classification.equals(classification, ignoreCase = true)
             }
         }
-    
+
         if (currentQuery.isNotBlank()) {
-    
-            result = result.filter {
-    
-                it.name.contains(
-                    currentQuery,
-                    ignoreCase = true
-                )
+            result = result.filter { pkg ->
+                pkg.name.contains(currentQuery, ignoreCase = true)
             }
         }
-    
+
         _packages.value = result
     }
 

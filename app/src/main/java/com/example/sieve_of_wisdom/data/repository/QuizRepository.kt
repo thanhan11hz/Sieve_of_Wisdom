@@ -17,7 +17,12 @@ class QuizRepository @Inject constructor(
     suspend fun getQuestion(categoryId: Int, amount: Int): Result<List<Question>> =
         runCatching {
             withContext(Dispatchers.IO) {
-                val ids = questionDao.getQuestionIds(categoryId)
+                // Fetch all question IDs if categoryId is 0 ("Tổng hợp"), otherwise filter by category
+                val ids = if (categoryId == 0) {
+                    questionDao.getAllQuestionIds()
+                } else {
+                    questionDao.getQuestionIds(categoryId)
+                }
 
                 val selectedIds = ids
                     .shuffled()
@@ -30,8 +35,12 @@ class QuizRepository @Inject constructor(
     suspend fun getPackageName(categoryId: Int): Result<String> =
         runCatching {
             withContext(Dispatchers.IO) {
-                val categoryEntity = categoryDao.getCategoryByID(categoryId)
-                categoryEntity.name
+                if (categoryId == 0) {
+                    "Tổng hợp"
+                } else {
+                    val categoryEntity = categoryDao.getCategoryByID(categoryId)
+                    categoryEntity.name
+                }
             }
         }
 }
