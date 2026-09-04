@@ -16,7 +16,7 @@
         android:right="6dp">
         <shape android:shape="rectangle">
             <!-- Mint Green Fill Color -->
-            <solid android:color="#80E8AC" />
+            <solid android:color="@color/primary_yellow" />
 
             <!-- Thick Black Outline -->
             <stroke

@@ -139,15 +139,15 @@ class QuizFragment : Fragment() {
         val currentIndex = session.currentQuestionIndex.toInt()
         val question = session.questions.getOrNull(currentIndex) ?: return
 
-        binding.tvQuestionNumber.text = "Câu ${currentIndex + 1} / ${session.questions.size}"
-        binding.tvScore.text = "Điểm: ${session.score}"
+        binding.tvQuestionNumber.setText("Câu ${currentIndex + 1} / ${session.questions.size}")
+        binding.tvScore.setText("Điểm: ${session.score}")
         binding.tvQuestion.text = question.asking
 
         binding.edtAnswer.requestFocus()
         val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(binding.edtAnswer, InputMethodManager.SHOW_IMPLICIT)
 
-        binding.tvTimer.text = "${session.timeLeft}s"
+        binding.tvTimer.setText("${session.timeLeft}s")
         binding.progressTimer.max = 60
         binding.progressTimer.progress = session.timeLeft
 

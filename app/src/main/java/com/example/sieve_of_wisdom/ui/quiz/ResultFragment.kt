@@ -18,6 +18,7 @@ import com.example.sieve_of_wisdom.ui.viewmodel.QuizViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.getValue
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class ResultFragment : Fragment() {
@@ -97,7 +98,7 @@ class ResultFragment : Fragment() {
                             binding.tvTopic.setText("Chủ đề: ${it.name}")
                             val correctCount = it.result.count{ it.isCorrect }
                             binding.tvScore.setText("${correctCount}/${it.result.size}")
-                            val coinsEarned = it.score + (it.timeLeft * 2)
+                            val coinsEarned = (it.score * 1.5).roundToInt()
                             binding.tvPoints.setText("Số xu nhận được: +${coinsEarned}")
                         }
                     }
