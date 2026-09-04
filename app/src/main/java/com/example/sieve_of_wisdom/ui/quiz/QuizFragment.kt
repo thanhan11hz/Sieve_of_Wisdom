@@ -38,6 +38,8 @@ class QuizFragment : Fragment() {
     private var soundRightId: Int = 0
     private var soundWrongId: Int = 0
 
+    private var lastQuestionIndex: Long = -1L
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -101,6 +103,10 @@ class QuizFragment : Fragment() {
     }
 
     private fun setupListeners() {
+        binding.root.setOnClickListener {
+            hideKeyboard()
+        }
+
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
@@ -148,6 +154,12 @@ class QuizFragment : Fragment() {
         binding.edtAnswer.requestFocus()
     }
 
+    private fun hideKeyboard() {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.hideSoftInputFromWindow(binding.root.windowToken, 0)
+        binding.edtAnswer.clearFocus()
+    }
+
     private fun observeViewModel() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -173,9 +185,13 @@ class QuizFragment : Fragment() {
         binding.tvScore.text = "Điểm: ${session.score}"
         binding.tvQuestion.text = question.asking
 
-        binding.edtAnswer.requestFocus()
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(binding.edtAnswer, InputMethodManager.SHOW_IMPLICIT)
+        // Only open soft keyboard ONCE when a new question starts, not on every timer tick
+        if (lastQuestionIndex != session.currentQuestionIndex) {
+            lastQuestionIndex = session.currentQuestionIndex
+            binding.edtAnswer.requestFocus()
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(binding.edtAnswer, InputMethodManager.SHOW_IMPLICIT)
+        }
 
         binding.tvTimer.text = "${session.timeLeft}s"
         binding.progressTimer.max = 90
