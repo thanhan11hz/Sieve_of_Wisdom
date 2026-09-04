@@ -44,12 +44,14 @@
 package com.example.sieve_of_wisdom.ui.quiz
 
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sieve_of_wisdom.data.model.QuestionResult
 import com.example.sieve_of_wisdom.databinding.ItemQuestionDetailBinding
-
+import com.example.sieve_of_wisdom.R
 class QuestionDetailAdapter(
     private var results: List<QuestionResult>
 ) : RecyclerView.Adapter<QuestionDetailAdapter.ViewHolder>() {
@@ -80,19 +82,34 @@ class QuestionDetailAdapter(
         val result = results[position]
 
         with(holder.binding) {
-            tvQuestionNumber.text = "Câu ${position + 1}"
-            tvQuestion.text = result.asking
-            tvCorrectAnswer.text = "Đáp án: ${result.correctAnswer}"
-            tvUserAnswer.text =
-                "Bạn trả lời: ${result.userAnswer ?: "Bỏ qua"}"
+            tvQuestionNumber.setText("Câu ${position + 1}")
+            tvQuestion.setText(result.asking)
+            tvCorrectAnswer.setText("Đáp án: ${result.correctAnswer}")
+            tvUserAnswer.setText(  "Bạn trả lời: ${result.userAnswer ?: "Bỏ qua"}")
+
 
             val backgroundColor = if (result.isCorrect) {
-                Color.parseColor("#4CAF50")
+                ContextCompat.getColor(
+                    holder.itemView.context,
+                    R.color.question_correct
+                )
             } else {
-                Color.parseColor("#E53935")
+                ContextCompat.getColor(
+                    holder.itemView.context,
+                    R.color.question_wrong
+                )
             }
 
-            questionItem.setBackgroundColor(backgroundColor)
+            val drawable = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                setColor(backgroundColor)
+                setStroke(
+                    5,
+                    Color.BLACK
+                )
+            }
+
+            questionItemContent.background = drawable
         }
     }
 

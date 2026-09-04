@@ -27,7 +27,7 @@
     <color name="container_background">#FFF8EE</color>
 
     <!-- Question states -->
-    <color name="question_correct">#43FF59</color>
+    <color name="question_correct">#49e377</color>
     <color name="question_wrong">#FF4D4D</color>
 
     <!-- Buttons -->

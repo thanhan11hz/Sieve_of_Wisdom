@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF8EE">
+    android:background="@drawable/bg_result">
 
     <!-- ================= BACK BUTTON ================= -->
 
@@ -25,25 +25,67 @@
 
     <!-- ================= TITLE ================= -->
 
-    <TextView
+    <!-- ================= TITLE ================= -->
+
+    <FrameLayout
         android:id="@+id/tvTitle"
         android:layout_width="320dp"
         android:layout_height="82dp"
         android:layout_marginTop="50dp"
-        android:background="@drawable/bg_detail_title"
-        android:gravity="center"
-        android:text="Chi tiết"
-        android:textColor="#FFFFFF"
-        android:textSize="43sp"
-        android:textStyle="bold"
-        app:fontFamily="@font/itim"
-        android:shadowColor="#000000"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        android:shadowRadius="1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_detail_title" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg_result_lines"
+            android:scaleType="fitXY"
+            android:clickable="false"
+            android:focusable="false" />
+
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center"-->
+<!--            android:text="Chi tiết"-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            android:textSize="43sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:fontFamily="@font/itim"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:shadowColor="#000000"-->
+<!--            android:shadowDx="2"-->
+<!--            android:shadowDy="2"-->
+<!--            android:shadowRadius="1"-->
+<!--            android:translationY="3dp"-->
+<!--            android:includeFontPadding="false" />-->
+
+        <com.example.sieve_of_wisdom.ui.neo.NeoTextView
+            android:id="@+id/tvResultTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="CHI TIẾT ĐÁP ÁN"
+            android:textColor="@color/white"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/itim"
+            android:background="@android:color/transparent"
+            app:neoShadowColor="@color/black"
+            app:neoShadowX="6dp"
+            app:neoShadowY="6dp"
+            android:translationY="15dp"
+            app:neoStrokeColor="@color/black"
+            app:neoStrokeWidth="5dp"
+            android:includeFontPadding="false" />
+
+    </FrameLayout>
 
 
     <!-- ================= QUESTION RECYCLER VIEW ================= -->

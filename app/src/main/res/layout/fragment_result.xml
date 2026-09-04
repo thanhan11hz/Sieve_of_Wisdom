@@ -5,44 +5,109 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF8EE">
+    android:background="@drawable/bg_result">
 
     <!-- ================= TITLE ================= -->
 
-    <TextView
-        android:id="@+id/tvResultTitle"
+
+<!--    <TextView-->
+<!--        android:id="@+id/tvResultTitle"-->
+<!--        android:layout_width="320dp"-->
+<!--        android:layout_height="78dp"-->
+<!--        android:layout_marginTop="48dp"-->
+<!--        android:background="@drawable/bg_result_title"-->
+<!--        android:gravity="center"-->
+<!--        android:shadowColor="#000000"-->
+<!--        android:shadowDx="2"-->
+<!--        android:shadowDy="2"-->
+<!--        android:shadowRadius="1"-->
+<!--        android:text="Kết quả"-->
+<!--        android:textColor="#FFFFFF"-->
+<!--        android:textSize="42sp"-->
+<!--        android:textStyle="bold"-->
+<!--        app:fontFamily="@font/itim"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.505"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+    <FrameLayout
+        android:id="@+id/containerResultTitle"
         android:layout_width="320dp"
         android:layout_height="78dp"
-        android:background="@drawable/bg_result_title"
-        android:gravity="center"
-        android:text="Kết quả"
-        android:textColor="#FFFFFF"
-        android:textSize="42sp"
-        android:textStyle="bold"
-        app:fontFamily="@font/itim"
-        android:shadowColor="#000000"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        android:shadowRadius="1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="48dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="48dp"/>
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_result_title" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg_result_lines"
+            android:scaleType="fitXY"
+            android:clickable="false"
+            android:focusable="false" />
+        <com.example.sieve_of_wisdom.ui.neo.NeoTextView
+            android:id="@+id/tvResultTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="KẾT QUẢ"
+            android:textColor="@color/white"
+            android:textSize="45sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/itim"
+            android:background="@android:color/transparent"
+            app:neoShadowColor="@color/black"
+            app:neoShadowX="6dp"
+            app:neoShadowY="6dp"
+            android:translationY="10dp"
+            app:neoStrokeColor="@color/black"
+            app:neoStrokeWidth="5dp"
+            android:includeFontPadding="false" />
+
+    </FrameLayout>
 
 
     <!-- ================= CONNECTING LINE ================= -->
+
 
     <View
         android:id="@+id/titleConnector"
         android:layout_width="8dp"
         android:layout_height="35dp"
-        android:background="#000000"
-        app:layout_constraintTop_toBottomOf="@id/tvResultTitle"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/containerResultTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
 
     <!-- ================= RESULT CARD ================= -->
+
+    <View
+        android:id="@+id/titleConnector1"
+        android:layout_width="8dp"
+        android:layout_height="35dp"
+        android:background="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/containerResultTitle" />
+
+    <View
+        android:id="@+id/titleConnector2"
+        android:layout_width="8dp"
+        android:layout_height="35dp"
+        android:background="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.689"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/containerResultTitle" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/resultCard"
@@ -53,47 +118,95 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg_result_lines"
+            android:scaleType="fitXY"
+            android:clickable="false"
+            android:focusable="false" />
 
         <!-- Topic -->
 
-        <TextView
+        <com.example.sieve_of_wisdom.ui.neo.NeoTextView
             android:id="@+id/tvTopic"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="38dp"
-            android:text="Chủ đề: Địa lí"
-            android:textColor="#000000"
-            android:textSize="29sp"
-            android:textStyle="bold"
-            app:fontFamily="@font/itim"
             android:gravity="center"
-            android:shadowColor="#FFFFFF"
-            android:shadowRadius="2"
+            android:text="Chủ đề: Địa lí"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/roboto"
+            app:neoShadowColor="@color/black"
+            app:neoShadowX="6dp"
+            app:neoShadowY="5dp"
+            app:neoStrokeColor="@color/black"
+            app:neoStrokeWidth="5dp"
+            android:includeFontPadding="false"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
+<!--        <TextView-->
+<!--            android:id="@+id/tvTopic"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="38dp"-->
+<!--            android:text="Chủ đề: Địa lí"-->
+<!--            android:textColor="#000000"-->
+<!--            android:textSize="29sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:fontFamily="@font/itim"-->
+<!--            android:gravity="center"-->
+<!--            android:shadowColor="#FFFFFF"-->
+<!--            android:shadowRadius="2"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"/>-->
+
 
         <!-- Correct answer text -->
-
-        <TextView
+        <com.example.sieve_of_wisdom.ui.neo.NeoTextView
             android:id="@+id/tvCorrectText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Bạn đã trả lời đúng"
-            android:textColor="#FFFFFF"
-            android:textSize="27sp"
-            android:textStyle="bold"
-            app:fontFamily="@font/itim"
             android:gravity="center"
-            android:shadowColor="#000000"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="1"
+            android:text="Số câu trả lời đúng"
+            android:textColor="@color/white"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/itim"
+            app:neoShadowColor="@color/black"
+            app:neoShadowX="6dp"
+            app:neoShadowY="5dp"
+            app:neoStrokeColor="@color/black"
+            app:neoStrokeWidth="5dp"
+            android:includeFontPadding="false"
             app:layout_constraintTop_toBottomOf="@id/tvTopic"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvCorrectText"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:text="Bạn đã trả lời đúng"-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            android:textSize="27sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:fontFamily="@font/itim"-->
+<!--            android:gravity="center"-->
+<!--            android:shadowColor="#000000"-->
+<!--            android:shadowDx="2"-->
+<!--            android:shadowDy="2"-->
+<!--            android:shadowRadius="1"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/tvTopic"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"/>-->
 
 
         <!-- Score -->
@@ -103,64 +216,119 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center"
+            android:gravity="center_horizontal|bottom"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@id/tvCorrectText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <TextView
+<!--            <TextView-->
+<!--                android:id="@+id/tvScore"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="23/30"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textSize="54sp"-->
+<!--                android:textStyle="bold"-->
+<!--                app:fontFamily="@font/itim"-->
+<!--                android:shadowColor="#000000"-->
+<!--                android:shadowDx="2"-->
+<!--                android:shadowDy="2"-->
+<!--                android:shadowRadius="1"/>-->
+
+            <com.example.sieve_of_wisdom.ui.neo.NeoTextView
                 android:id="@+id/tvScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="23/30"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/white"
                 android:textSize="54sp"
                 android:textStyle="bold"
-                app:fontFamily="@font/itim"
-                android:shadowColor="#000000"
-                android:shadowDx="2"
-                android:shadowDy="2"
-                android:shadowRadius="1"/>
+                android:fontFamily="@font/roboto"
+                app:neoShadowColor="@color/black"
+                app:neoShadowX="6dp"
+                app:neoShadowY="5dp"
+                app:neoStrokeColor="@color/black"
+                app:neoStrokeWidth="5dp"
+                android:includeFontPadding="false" />
 
-            <TextView
-                android:id="@+id/tvQuestionLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="7dp"
-                android:text="Câu"
-                android:textColor="#FFFFFF"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                app:fontFamily="@font/itim"
-                android:shadowColor="#000000"
-                android:shadowDx="2"
-                android:shadowDy="2"
-                android:shadowRadius="1"/>
+<!--            <com.example.sieve_of_wisdom.ui.neo.NeoTextView-->
+<!--                android:id="@+id/tvQuestionLabel"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="7dp"-->
+<!--                android:fontFamily="@font/itim"-->
+<!--                android:includeFontPadding="false"-->
+<!--                android:text="Câu"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="34sp"-->
+<!--                android:textStyle="bold"-->
+<!--                app:neoShadowColor="@color/black"-->
+<!--                app:neoShadowX="3dp"-->
+<!--                app:neoShadowY="3dp"-->
+<!--                app:neoStrokeColor="@color/black"-->
+<!--                app:neoStrokeWidth="4dp" />-->
+
+            <!--            <TextView-->
+<!--                android:id="@+id/tvQuestionLabel"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="7dp"-->
+<!--                android:text="Câu"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textSize="28sp"-->
+<!--                android:textStyle="bold"-->
+<!--                app:fontFamily="@font/itim"-->
+<!--                android:shadowColor="#000000"-->
+<!--                android:shadowDx="2"-->
+<!--                android:shadowDy="2"-->
+<!--                android:shadowRadius="1"/>-->
 
         </LinearLayout>
 
 
         <!-- Points -->
 
-        <TextView
+        <com.example.sieve_of_wisdom.ui.neo.NeoTextView
             android:id="@+id/tvPoints"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
+            android:gravity="center"
             android:text="Số xu nhận được: +32"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:fontFamily="@font/itim"
-            android:gravity="center"
-            android:shadowColor="#000000"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="1"
+            android:fontFamily="@font/itim"
+            app:neoShadowColor="@color/black"
+            app:neoShadowX="6dp"
+            app:neoShadowY="5dp"
+            app:neoStrokeColor="@color/black"
+            app:neoStrokeWidth="5dp"
+            android:includeFontPadding="false"
             app:layout_constraintTop_toBottomOf="@id/scoreLayout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvPoints"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="18dp"-->
+<!--            android:text="Số xu nhận được: +32"-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            android:textSize="24sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:fontFamily="@font/itim"-->
+<!--            android:gravity="center"-->
+<!--            android:shadowColor="#000000"-->
+<!--            android:shadowDx="1"-->
+<!--            android:shadowDy="1"-->
+<!--            android:shadowRadius="1"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/scoreLayout"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"/>-->
 
 
         <!-- Detail button -->
@@ -169,7 +337,7 @@
             android:id="@+id/btnAnswerDetail"
             android:layout_width="240dp"
             android:layout_height="58dp"
-            android:layout_marginTop="42dp"
+            android:layout_marginTop="22dp"
             android:background="@drawable/bg_detail_button"
             android:text="Xem chi tiết đáp án"
             android:textAllCaps="false"

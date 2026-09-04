@@ -94,11 +94,11 @@ class ResultFragment : Fragment() {
                 launch {
                     viewModel.quizSessionState.collect { session ->
                         session?.let {
-                            binding.tvTopic.text = "Chủ đề: ${it.name}"
+                            binding.tvTopic.setText("Chủ đề: ${it.name}")
                             val correctCount = it.result.count{ it.isCorrect }
-                            binding.tvScore.text = "${correctCount}/${it.result.size}"
+                            binding.tvScore.setText("${correctCount}/${it.result.size}")
                             val coinsEarned = it.score + (it.timeLeft * 2)
-                            binding.tvPoints.text = "Số xu nhận được: +${coinsEarned}"
+                            binding.tvPoints.setText("Số xu nhận được: +${coinsEarned}")
                         }
                     }
                 }
