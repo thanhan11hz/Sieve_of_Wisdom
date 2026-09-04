@@ -38,7 +38,7 @@ class SyncWorker @AssistedInject constructor(
     }
 
     companion object {
-        private const val WORK_NAME = "SyncDataWork"
+        const val WORK_NAME = "SyncDataWork"
 
         fun enqueueSync(context: Context) {
             Log.d(

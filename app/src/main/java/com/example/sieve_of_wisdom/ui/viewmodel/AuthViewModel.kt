@@ -12,10 +12,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
+import kotlinx.coroutines.suspendCancellableCoroutine
+import dagger.hilt.android.qualifiers.ApplicationContext
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    @ApplicationContext private val appContext: Context
 ): ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>(false)
     val isLoading: LiveData<Boolean>
@@ -25,6 +31,13 @@ class AuthViewModel @Inject constructor(
             _isLoading.value = true
             try {
                 val result = authRepository.login(username, password)
+
+                if (result.isFailure) {
+                    onResult(result)
+                    return@launch
+                }
+
+                waitForSync()
                 onResult(result)
 
             } finally {
@@ -72,6 +85,73 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             val user = authRepository.getCurrentUser()
             onResult(user)
+        }
+    }
+
+    private suspend fun waitForSync(): Boolean {
+
+        val workManager = WorkManager.getInstance(appContext)
+
+        return suspendCancellableCoroutine { continuation ->
+
+            val observer =
+                object : Observer<List<WorkInfo>> {
+
+                    override fun onChanged(
+                        workInfos: List<WorkInfo>
+                    ) {
+
+                        val workInfo =
+                            workInfos.firstOrNull()
+                                ?: return
+
+                        when (workInfo.state) {
+
+                            WorkInfo.State.SUCCEEDED -> {
+
+                                if (continuation.isActive) {
+                                    continuation.resume(true) {}
+                                }
+
+                                workManager
+                                    .getWorkInfosForUniqueWorkLiveData(
+                                        SyncWorker.WORK_NAME
+                                    )
+                                    .removeObserver(this)
+                            }
+
+                            WorkInfo.State.FAILED,
+                            WorkInfo.State.CANCELLED -> {
+
+                                if (continuation.isActive) {
+                                    continuation.resume(false) {}
+                                }
+
+                                workManager
+                                    .getWorkInfosForUniqueWorkLiveData(
+                                        SyncWorker.WORK_NAME
+                                    )
+                                    .removeObserver(this)
+                            }
+
+                            else -> {
+                                // ENQUEUED / RUNNING
+                                // tiếp tục chờ
+                            }
+                        }
+                    }
+                }
+
+            val liveData =
+                workManager.getWorkInfosForUniqueWorkLiveData(
+                    SyncWorker.WORK_NAME
+                )
+
+            liveData.observeForever(observer)
+
+            continuation.invokeOnCancellation {
+                liveData.removeObserver(observer)
+            }
         }
     }
 }
