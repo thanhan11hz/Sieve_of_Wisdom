@@ -1,9 +1,12 @@
 package com.example.sieve_of_wisdom.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.sieve_of_wisdom.data.local.db.QuestionDao
 import com.example.sieve_of_wisdom.data.model.QuestionResult
 import com.example.sieve_of_wisdom.data.model.QuizSession
+import com.example.sieve_of_wisdom.data.remote.dto.QuestionDto
 import com.example.sieve_of_wisdom.data.util.QuizProgressManager
 import com.example.sieve_of_wisdom.data.repository.QuizRepository
 import com.example.sieve_of_wisdom.data.repository.UserRepository
@@ -13,6 +16,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +24,8 @@ import javax.inject.Inject
 class QuizViewModel @Inject constructor(
     private val quizRepository: QuizRepository,
     private val userRepository: UserRepository,
-    private val quizProgressManager: QuizProgressManager
+    private val quizProgressManager: QuizProgressManager,
+    private val questionDao: QuestionDao
 ) : ViewModel() {
 
     private val _quizSessionState = MutableStateFlow<QuizSession?>(null)
@@ -30,10 +35,20 @@ class QuizViewModel @Inject constructor(
 
     fun startQuiz(categoryId: Int, amount: Int = 30, totalTime: Int = 60) {
         viewModelScope.launch {
+            Log.d("QUIZ_DEBUG", "Category ID: $categoryId")
             quizRepository.getPackageName(categoryId)
                 .onSuccess { pkgName ->
+                    Log.d(
+                        "QUIZ_DEBUG",
+                        "PACKAGE SUCCESS: name=$pkgName"
+                    )
+
                     quizRepository.getQuestion(categoryId, amount)
                         .onSuccess { questions ->
+                            Log.d(
+                                "QUIZ_DEBUG",
+                                "QUESTION SUCCESS: count=${questions.size}"
+                            )
                             if (questions.isNotEmpty()) {
                                 _quizSessionState.value = QuizSession(
                                     categoryId = categoryId,
@@ -45,9 +60,31 @@ class QuizViewModel @Inject constructor(
                                     timeLeft = totalTime,
                                     isFinished = false
                                 )
+                                Log.d(
+                                    "QUIZ_DEBUG",
+                                    "SESSION CREATED"
+                                )
                                 startTimer()
+                            }  else {
+                                Log.e(
+                                    "QUIZ_DEBUG",
+                                    "QUESTIONS EMPTY"
+                                )
                             }
+                        }.onFailure { exception ->
+                            Log.e(
+                                "QUIZ_DEBUG",
+                                "GET QUESTIONS FAILED",
+                                exception
+                            )
                         }
+                }.onFailure { exception ->
+                    Log.e(
+                        "QUIZ_DEBUG",
+                        "GET PACKAGE NAME FAILED",
+                        exception
+                    )
+
                 }
         }
     }
@@ -138,6 +175,17 @@ class QuizViewModel @Inject constructor(
             _quizSessionState.value = currentSession.copy(
                 currentQuestionIndex = (currentIndex + 1).toLong(),
                 result = updatedResult
+            )
+        }
+    }
+
+    fun resetForReplay() {
+        _quizSessionState.update { session ->
+            session?.copy(
+                isFinished = false,
+                currentQuestionIndex = 0L,
+                score = 0,
+                result = emptyList()
             )
         }
     }

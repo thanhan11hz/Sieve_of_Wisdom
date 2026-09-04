@@ -12,8 +12,7 @@ data class QuestionWithAnswers(
     @Relation(
         parentColumn = "id",
         entityColumn = "question_id",
-        entity = AnswerEntity::class,
-        projection = ["answering"]
+        entity = AnswerEntity::class
     )
-    val answers: List<String>
+    val answers: List<AnswerEntity>
 )

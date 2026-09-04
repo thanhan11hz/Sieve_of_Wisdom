@@ -2,6 +2,7 @@ package com.example.sieve_of_wisdom.ui.quiz
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -28,7 +29,7 @@ class QuizFragment : Fragment() {
     private val binding
         get() = _binding!!
 
-    private val viewModel: QuizViewModel by viewModels()
+    private val viewModel: QuizViewModel by hiltNavGraphViewModels(R.id.quiz_graph)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -139,40 +140,18 @@ class QuizFragment : Fragment() {
 
     private fun navigateToResult() {
         findNavController().navigate(
-            R.id.action_registerFragment_to_homeFragment
+            R.id.action_quizFragment_to_resultFragment
         )
-//        val session = viewModel.quizSessionState.value ?: return
-//        val correctCount = session.result.count { it.isCorrect }
-//        val totalCoins = session.score + (viewModel.timeLeftState.value * 2)
-//
-//        val detailItems = ArrayList(session.questions.mapIndexed { index, question ->
-//            val result = session.result.find { it.questionId == question.id }
-//            QuestionDetailItem(
-//                questionNumber = index + 1,
-//                questionText = question.asking,
-//                correctAnswer = question.answers.firstOrNull() ?: "",
-//                userAnswer = result?.userAnswer,
-//                isCorrect = result?.isCorrect ?: false
-//            )
-//        })
-//
-//        val intent = Intent(this, ResultActivity::class.java).apply {
-//            putExtra("EXTRA_CORRECT_COUNT", correctCount)
-//            putExtra("EXTRA_TOTAL_QUESTIONS", session.questions.size)
-//            putExtra("EXTRA_COINS_EARNED", totalCoins)
-//            putExtra("EXTRA_CATEGORY_ID", session.categoryId)
-//            putExtra("EXTRA_PACKAGE_NAME", intent.getStringExtra("EXTRA_PACKAGE_NAME") ?: "Tổng hợp")
-//            putExtra("EXTRA_DETAIL_ITEMS", detailItems)
-//        }
-//        startActivity(intent)
-//        finish()
     }
 
     private fun showExitConfirmationDialog() {
         AlertDialog.Builder(requireContext())
             .setTitle("Thoát lượt chơi?")
             .setMessage("Tiến trình hiện tại sẽ bị hủy và không ghi nhận điểm số.")
-            .setPositiveButton("Thoát") { _, _ -> findNavController().popBackStack() }
+            .setPositiveButton("Thoát") { _, _ -> findNavController().popBackStack(
+                R.id.homeFragment,
+                false
+            ) }
             .setNegativeButton("Tiếp tục chơi", null)
             .show()
     }

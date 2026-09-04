@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -24,7 +25,7 @@ class DetailFragment : Fragment() {
     private val binding
         get() = _binding!!
 
-    private val viewModel: QuizViewModel by navGraphViewModels(R.id.quiz_graph)
+    private val viewModel: QuizViewModel by hiltNavGraphViewModels(R.id.quiz_graph)
 
     private lateinit var adapter: QuestionDetailAdapter
 
