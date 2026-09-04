@@ -41,7 +41,7 @@ class PackageAdapter(
 
             binding.tvPackageTitle.text =pkg.name
             binding.tvPackageQuestions.text = "30 câu hỏi"
-            binding.tvPackageTime.text = "60 giây"
+            binding.tvPackageTime.text = "90 giây"
             binding.btnPackageStart.text = "Bắt đầu"
         
             binding.btnPackageStart.setOnClickListener {
