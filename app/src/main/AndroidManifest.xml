@@ -33,20 +33,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".ui.quiz.QuizActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
-
-        <activity
-            android:name=".ui.quiz.ResultActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".ui.quiz.DetailActivity"
-            android:exported="false" />
     </application>
 
 </manifest>
