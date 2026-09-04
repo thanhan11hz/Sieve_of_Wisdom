@@ -121,7 +121,7 @@ class HomeViewModel @Inject constructor(
                         ),
                         Package(
                             categoryId = -1,
-                            name = "Khoa học tự nhiên",
+                            name = "Tự nhiên",
                             classification = "Science",
                             price = 0,
                             isUnlocked = true,
@@ -129,7 +129,7 @@ class HomeViewModel @Inject constructor(
                         ),
                         Package(
                             categoryId = -2,
-                            name = "Khoa học xã hội",
+                            name = "Xã hội",
                             classification = "Social",
                             price = 0,
                             isUnlocked = true,
@@ -247,8 +247,7 @@ class HomeViewModel @Inject constructor(
 
         selectedTopic?.let { classification ->
             result = result.filter { pkg ->
-                pkg.categoryId in listOf(0, -1, -2) ||
-                        pkg.classification.equals(classification, ignoreCase = true)
+                pkg.categoryId == 0 || pkg.classification.equals(classification, ignoreCase = true)
             }
         }
 
