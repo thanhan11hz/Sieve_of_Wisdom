@@ -39,7 +39,7 @@ class QuizViewModel @Inject constructor(
     private var timerJob: Job? = null
     private var isTimerPaused = false
 
-    fun startQuiz(categoryId: Int, amount: Int = 30, totalTime: Int = 60) {
+    fun startQuiz(categoryId: Int, amount: Int = 30, totalTime: Int = 90) {
         viewModelScope.launch {
             Log.d("QUIZ_DEBUG", "Category ID: $categoryId")
             quizRepository.getPackageName(categoryId)

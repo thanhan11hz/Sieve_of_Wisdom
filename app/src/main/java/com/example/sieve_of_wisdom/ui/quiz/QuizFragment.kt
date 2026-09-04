@@ -178,7 +178,7 @@ class QuizFragment : Fragment() {
         imm.showSoftInput(binding.edtAnswer, InputMethodManager.SHOW_IMPLICIT)
 
         binding.tvTimer.text = "${session.timeLeft}s"
-        binding.progressTimer.max = 60
+        binding.progressTimer.max = 90
         binding.progressTimer.progress = session.timeLeft
 
         if (session.isFinished) navigateToResult()
