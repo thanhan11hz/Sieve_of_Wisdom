@@ -70,6 +70,16 @@ class StoreFragment : Fragment() {
             }
         }
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                user.userState.collect { state ->
+                    state?.let {
+                        binding.starText.text = it.coin.toString()
+                    }
+                }
+            }
+        }
+
         parentFragmentManager.setFragmentResultListener(
             PurchaseDialog.REQUEST_KEY,
             viewLifecycleOwner

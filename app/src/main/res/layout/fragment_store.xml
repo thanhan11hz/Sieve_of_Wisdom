@@ -20,47 +20,83 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
+            <com.example.sieve_of_wisdom.ui.neo.NeoTextView
                 android:id="@+id/tvHeaderTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cửa hàng"
-                android:textColor="#000000"
-                android:textSize="28sp"
+                android:textColor="@color/white"
+                android:textSize="35sp"
                 android:textStyle="bold"
+                android:fontFamily="@font/itim"
+                android:includeFontPadding="false"
+                app:neoShadowColor="@color/black"
+                app:neoShadowX="6dp"
+                app:neoShadowY="6dp"
+                app:neoStrokeColor="@color/black"
+                app:neoStrokeWidth="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
-                android:id="@+id/badgeStars"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_star_badge"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp"
+            <com.example.sieve_of_wisdom.ui.neo.NeoFrameLayout
+                android:id="@+id/streak_container"
+                android:layout_width="95dp"
+                android:layout_height="35dp"
+                app:neoBackgroundColor="#6BD3D8"
+                app:neoShadowColor="@color/black"
+                app:neoShadowX="3dp"
+                app:neoShadowY="4dp"
+                app:neoStrokeColor="@color/black"
+                app:neoStrokeWidth="2dp"
+                app:neoCornerRadius="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@android:drawable/btn_star_big_on" />
+                <LinearLayout
+                    android:id="@+id/streak_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="15"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:id="@+id/starText"/>
-            </LinearLayout>
+                    <!-- STAR -->
+
+                    <com.example.sieve_of_wisdom.ui.neo.NeoTextView
+                        android:id="@+id/tv_streak_star"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:fontFamily="@font/roboto"
+                        android:includeFontPadding="false"
+                        android:gravity="center"
+                        android:text="★"
+                        android:textColor="@color/primary_yellow"
+                        android:textSize="22sp"
+                        app:neoShadowColor="@color/black"
+                        app:neoShadowX="2dp"
+                        app:neoShadowY="2dp"
+                        app:neoStrokeColor="@color/black"
+                        app:neoStrokeWidth="2dp" />
+
+                    <!-- POINTS -->
+
+                    <TextView
+                        android:id="@+id/starText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto"
+                        android:includeFontPadding="false"
+                        android:text="15"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </com.example.sieve_of_wisdom.ui.neo.NeoFrameLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -156,6 +192,7 @@
                         android:paddingHorizontal="20dp"
                         android:paddingTop="12dp"
                         android:paddingBottom="45dp"
+                        android:fontFamily="@font/itim"
                         android:text="Khoa học tự nhiên"
                         android:textColor="#000000"
                         android:textSize="22sp"
@@ -170,6 +207,7 @@
                         android:paddingHorizontal="20dp"
                         android:paddingTop="12dp"
                         android:paddingBottom="12dp"
+                        android:fontFamily="@font/itim"
                         android:text="Khoa học xã hội"
                         android:textColor="#000000"
                         android:textSize="22sp"
@@ -184,6 +222,7 @@
                         android:paddingHorizontal="20dp"
                         android:paddingTop="12dp"
                         android:paddingBottom="12dp"
+                        android:fontFamily="@font/itim"
                         android:text="Kiến thức chung"
                         android:textColor="#000000"
                         android:textSize="22sp"
