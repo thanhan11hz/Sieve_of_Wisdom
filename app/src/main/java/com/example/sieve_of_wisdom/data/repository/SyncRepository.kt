@@ -60,8 +60,6 @@ class SyncRepository @Inject constructor(
                     if (remoteList.isNotEmpty()) {
                         val entities = remoteList.map { it.toCategoryEntity() }
                         categoryDao.insertCategories(entities)
-                        val safeSyncTime = System.currentTimeMillis() - 5000
-                        updateManager.saveLastUpdatedTime(safeSyncTime)
                     }
                 }
             }
@@ -102,6 +100,7 @@ class SyncRepository @Inject constructor(
                 }
             }
             val latestQuestionsResponse = syncApiService.getLatestQuestions(lastUpdated)
+            val body = latestQuestionsResponse.body()
             if (latestQuestionsResponse.isSuccessful) {
                 latestQuestionsResponse.body()?.let { questionDtoList ->
                     val questionEntities = questionDtoList.map { it.toQuestionEntity() }
@@ -110,10 +109,9 @@ class SyncRepository @Inject constructor(
                     questionDao.insertQuestions(questionEntities)
                     answerDao.insertAnswers(answerEntities)
                     val safeSyncTime = System.currentTimeMillis() - 5000
-                    updateManager.saveLastUpdatedTime(safeSyncTime)
+                    updateManager.saveLastUpdatedTime(0)
                 }
             }
-
 
         }
     }

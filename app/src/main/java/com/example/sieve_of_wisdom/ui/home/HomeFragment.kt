@@ -267,6 +267,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         // TODO:
         // Navigate tới QuizActivity với categoryId
+
+        val bundle = Bundle().apply {
+            putInt("category_id", pkg.categoryId)
+        }
+
+        findNavController().navigate(
+            R.id.quiz_graph,
+            bundle
+        )
     }
 
     private fun showUnlockDialog(pkg: Package) {
@@ -286,5 +295,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadPackages()
     }
 }

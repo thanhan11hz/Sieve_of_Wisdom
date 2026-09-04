@@ -119,7 +119,7 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/durationInfo"
-        tools:visibility="visible" />
+        tools:visibility="invisible" />
 
     <!-- BANNER -->
     <FrameLayout

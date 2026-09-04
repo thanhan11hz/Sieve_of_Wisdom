@@ -10,7 +10,7 @@ fun QuestionWithAnswers.toModel(): Question {
     return Question(
         id = question.id,
         asking = question.asking,
-        answers = answers
+        answers = answers.map { it.answering }
     )
 }
 

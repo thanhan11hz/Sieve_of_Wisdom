@@ -1,15 +1,23 @@
 package com.example.sieve_of_wisdom.ui.home
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.sieve_of_wisdom.Dialog.PurchaseDialog
 import com.example.sieve_of_wisdom.data.model.Package
 import com.example.sieve_of_wisdom.databinding.ItemTopicCardBinding
+import com.example.sieve_of_wisdom.ui.viewmodel.PackageViewModel
 
-class TopicCardAdapter :
+class TopicCardAdapter(
+    private val onUnlockClick: (Package) -> Unit
+) :
     ListAdapter<Package, TopicCardAdapter.StoreViewHolder>(DIFF_CALLBACK) {
 
     // ViewHolder
@@ -22,7 +30,7 @@ class TopicCardAdapter :
             binding.tvStars.text = item.price.toString()
 
             if (item.isUnlocked) {
-                binding.btnUnlock.visibility = View.GONE
+                binding.btnUnlock.visibility = View.INVISIBLE
                 binding.btnUnlock.isEnabled = false
 
                 binding.tvBannerLocked.visibility = View.GONE
@@ -33,9 +41,15 @@ class TopicCardAdapter :
 
                 binding.tvBannerUnLocked.visibility = View.GONE
                 binding.tvBannerLocked.visibility = View.VISIBLE
+
+                binding.btnUnlock.setOnClickListener {
+                    onUnlockClick(item)
+                }
+
             }
         }
     }
+
 
     // Create ViewHolder
     override fun onCreateViewHolder(
