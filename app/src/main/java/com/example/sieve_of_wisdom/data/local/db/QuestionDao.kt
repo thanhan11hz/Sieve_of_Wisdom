@@ -16,7 +16,7 @@ interface QuestionDao {
     FROM Question
     WHERE category_id = :categoryId
 """)
-//    @Query(""" // Query lọc NaN
+//    @Query("""
 //        SELECT id FROM Question
 //        WHERE category_id = :categoryId
 //        AND id NOT IN (
@@ -27,7 +27,7 @@ interface QuestionDao {
     suspend fun getQuestionIds(categoryId: Int): List<Long>
 
     @Query("SELECT id FROM question")
-//    @Query(""" // Query lọc NaN
+//    @Query("""
 //        SELECT id FROM Question
 //        WHERE id NOT IN (
 //            SELECT question_id FROM Answer
@@ -35,6 +35,17 @@ interface QuestionDao {
 //        )
 //    """)
     suspend fun getAllQuestionIds(): List<Long>
+
+    @Query("""
+    SELECT q.id FROM Question q
+    INNER JOIN Category c ON q.category_id = c.id
+    WHERE LOWER(c.classification) = LOWER(:classification)
+    AND q.id NOT IN (
+        SELECT question_id FROM Answer 
+        WHERE LOWER(answering) LIKE '%nan%' OR TRIM(answering) = ''
+    )
+""")
+    suspend fun getQuestionIdsByClassification(classification: String): List<Long>
 
     @Query("""
     SELECT *

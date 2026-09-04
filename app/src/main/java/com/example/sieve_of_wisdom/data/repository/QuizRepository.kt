@@ -17,16 +17,17 @@ class QuizRepository @Inject constructor(
     suspend fun getQuestion(categoryId: Int, amount: Int): Result<List<Question>> =
         runCatching {
             withContext(Dispatchers.IO) {
-                // Fetch all question IDs if categoryId is 0 ("Tổng hợp"), otherwise filter by category
-                val ids = if (categoryId == 0) {
-                    questionDao.getAllQuestionIds()
-                } else {
-                    questionDao.getQuestionIds(categoryId)
+                val ids = when (categoryId) {
+                    0 -> questionDao.getAllQuestionIds()
+                    -1 -> questionDao.getQuestionIdsByClassification("Science")
+                    -2 -> questionDao.getQuestionIdsByClassification("Social")
+                    else -> questionDao.getQuestionIds(categoryId)
                 }
 
                 val selectedIds = ids
                     .shuffled()
                     .take(amount)
+
                 val questions = questionDao.getQuestionWithAnswerByIds(selectedIds)
                 questions.map { it.toModel() }
             }
@@ -35,11 +36,14 @@ class QuizRepository @Inject constructor(
     suspend fun getPackageName(categoryId: Int): Result<String> =
         runCatching {
             withContext(Dispatchers.IO) {
-                if (categoryId == 0) {
-                    "Tổng hợp"
-                } else {
-                    val categoryEntity = categoryDao.getCategoryByID(categoryId)
-                    categoryEntity.name
+                when (categoryId) {
+                    0 -> "Tổng hợp"
+                    -1 -> "Tự nhiên"
+                    -2 -> "Xã hội"
+                    else -> {
+                        val categoryEntity = categoryDao.getCategoryByID(categoryId)
+                        categoryEntity.name
+                    }
                 }
             }
         }

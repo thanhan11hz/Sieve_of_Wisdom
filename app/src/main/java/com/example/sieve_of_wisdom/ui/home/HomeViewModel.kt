@@ -110,17 +110,34 @@ class HomeViewModel @Inject constructor(
             packageRepository
                 .getPackage()
                 .onSuccess { remotePackages ->
-                    val tongHopPackage = Package(
-                        categoryId = 0, // 0 represents all categories combined
-                        name = "Tổng hợp",
-                        classification = "Common",
-                        price = 0,
-                        isUnlocked = true,
-                        quantity = 30
+                    val hardcodedPackages = listOf(
+                        Package(
+                            categoryId = 0,
+                            name = "Tổng hợp",
+                            classification = "Common",
+                            price = 0,
+                            isUnlocked = true,
+                            quantity = 30
+                        ),
+                        Package(
+                            categoryId = -1,
+                            name = "Khoa học tự nhiên",
+                            classification = "Science",
+                            price = 0,
+                            isUnlocked = true,
+                            quantity = 30
+                        ),
+                        Package(
+                            categoryId = -2,
+                            name = "Khoa học xã hội",
+                            classification = "Social",
+                            price = 0,
+                            isUnlocked = true,
+                            quantity = 30
+                        )
                     )
 
-                    // Place "Tổng hợp" at the top of the package list
-                    allPackages = listOf(tongHopPackage) + remotePackages
+                    allPackages = hardcodedPackages + remotePackages
                     _totalPackages.value = allPackages.size
 
                     applyFilters()
@@ -228,10 +245,10 @@ class HomeViewModel @Inject constructor(
     private fun applyFilters() {
         var result = allPackages.filter { pkg -> pkg.isUnlocked }
 
-        // Keep "Tổng hợp" (categoryId == 0) visible or filter by topic
         selectedTopic?.let { classification ->
             result = result.filter { pkg ->
-                pkg.categoryId == 0 || pkg.classification.equals(classification, ignoreCase = true)
+                pkg.categoryId in listOf(0, -1, -2) ||
+                        pkg.classification.equals(classification, ignoreCase = true)
             }
         }
 

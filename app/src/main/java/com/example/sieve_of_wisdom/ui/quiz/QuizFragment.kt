@@ -2,7 +2,7 @@ package com.example.sieve_of_wisdom.ui.quiz
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -82,8 +82,24 @@ class QuizFragment : Fragment() {
             clearInput()
         }
 
-        binding.edtAnswer.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEND || actionId == EditorInfo.IME_ACTION_DONE) {
+        // Handles Soft Keyboard IME Actions (Done, Send, Go, Enter)
+        binding.edtAnswer.setOnEditorActionListener { _, actionId, event ->
+            val isEnterKeyPressed = event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN
+            if (actionId == EditorInfo.IME_ACTION_SEND ||
+                actionId == EditorInfo.IME_ACTION_DONE ||
+                actionId == EditorInfo.IME_ACTION_GO ||
+                isEnterKeyPressed) {
+                submitCurrentAnswer()
+                true
+            } else {
+                false
+            }
+        }
+
+        // Handles Physical/Emulator Hardware Keyboard Enter Keys
+        binding.edtAnswer.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN &&
+                (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_NUMPAD_ENTER)) {
                 submitCurrentAnswer()
                 true
             } else {
@@ -154,5 +170,10 @@ class QuizFragment : Fragment() {
             ) }
             .setNegativeButton("Tiếp tục chơi", null)
             .show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
